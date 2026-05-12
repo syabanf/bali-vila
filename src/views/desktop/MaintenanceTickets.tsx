@@ -1,15 +1,37 @@
 import { type FC, useState } from 'react'
 import {
   Plus, Search, Clock, Sparkles, AlertTriangle,
-  Wrench, CheckCircle, Loader, PackageSearch, User,
+  Wrench, CheckCircle, Loader, PackageSearch, User, Trash2,
 } from 'lucide-react'
-import { maintenanceTickets, vendors } from '../../data/mockData'
+import { maintenanceTickets, vendors, villasMaster } from '../../data/mockData'
+import Modal from '../../components/Modal'
+import ConfirmDialog from '../../components/ConfirmDialog'
 import clsx from 'clsx'
 
-type Ticket = typeof maintenanceTickets[number]
+interface Ticket {
+  id: string
+  villa: string
+  villaId: string
+  issue: string
+  category: string
+  priority: string
+  status: 'open' | 'in-progress' | 'pending-parts' | 'scheduled' | 'resolved'
+  createdAt: string
+  createdBy: string
+  assignedTo: string | null
+  vendorId: string | null
+  estimatedCost: number | null
+  actualCost: number | null
+  estimatedTime: string
+  aiDiagnosis: string
+  slaDeadline: string
+  notes: string
+  photos: number
+}
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const categories = ['All', 'Plumbing', 'Electrical', 'Air Conditioning', 'Pool', 'Carpentry', 'IT / WiFi']
+const ticketCategories = ['Plumbing', 'Electrical', 'Air Conditioning', 'Pool', 'Carpentry', 'IT & WiFi', 'Civil']
 const priorities = ['All', 'high', 'medium', 'low']
 
 const priorityConfig = {
@@ -53,6 +75,130 @@ const isSlaOverdue = (deadline: string) => {
   } catch {
     return false
   }
+}
+
+// ─── Ticket Form ──────────────────────────────────────────────────────────────
+const TicketForm: FC<{
+  form: Partial<Ticket>
+  onChange: (patch: Partial<Ticket>) => void
+}> = ({ form, onChange }) => {
+  const f =
+    (field: keyof Ticket) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+      onChange({ [field]: e.target.value } as Partial<Ticket>)
+
+  return (
+    <div className="space-y-4">
+      {/* Row 1: Villa / Category / Priority */}
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Villa</label>
+          <select className="input-field" value={form.villa ?? ''} onChange={f('villa')}>
+            <option value="">Select villa…</option>
+            {villasMaster.map((v) => (
+              <option key={v.id} value={v.name}>{v.name}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Category</label>
+          <select className="input-field" value={form.category ?? ''} onChange={f('category')}>
+            <option value="">Select category…</option>
+            {ticketCategories.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Priority</label>
+          <select className="input-field" value={form.priority ?? ''} onChange={f('priority')}>
+            <option value="">Select priority…</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Row 2: Issue Description */}
+      <div>
+        <label className="text-xs font-medium text-cocoa-600 mb-1 block">Issue Description *</label>
+        <input
+          type="text"
+          className="input-field w-full"
+          value={form.issue ?? ''}
+          onChange={f('issue')}
+          placeholder="Describe the issue…"
+        />
+      </div>
+
+      {/* AI info box */}
+      <div className="flex items-start gap-3 bg-teal-50 border border-teal-200 rounded-xl p-3.5">
+        <Sparkles className="w-4 h-4 text-teal-600 flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-teal-700 leading-relaxed">
+          Describe the issue in detail for AI-assisted diagnosis. Diagnosis will be generated after submission.
+        </p>
+      </div>
+
+      {/* Row 3: Vendor / Cost */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Assign Vendor</label>
+          <select className="input-field" value={form.vendorId ?? ''} onChange={f('vendorId')}>
+            <option value="">Unassigned</option>
+            {vendors.map((v) => (
+              <option key={v.id} value={v.id}>{v.name}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Estimated Cost IDR</label>
+          <input
+            type="number"
+            className="input-field"
+            value={form.estimatedCost ?? ''}
+            onChange={(e) => onChange({ estimatedCost: e.target.value ? Number(e.target.value) : null as unknown as number })}
+            placeholder="350000"
+          />
+        </div>
+      </div>
+
+      {/* Row 4: Est. Time / SLA */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Est. Completion Time</label>
+          <input
+            type="text"
+            className="input-field"
+            value={form.estimatedTime ?? ''}
+            onChange={f('estimatedTime')}
+            placeholder="2h"
+          />
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">SLA Deadline</label>
+          <input
+            type="datetime-local"
+            className="input-field"
+            value={form.slaDeadline ?? ''}
+            onChange={f('slaDeadline')}
+          />
+        </div>
+      </div>
+
+      {/* Notes */}
+      <div>
+        <label className="text-xs font-medium text-cocoa-600 mb-1 block">Notes</label>
+        <textarea
+          rows={3}
+          className="input-field resize-none w-full"
+          value={form.notes ?? ''}
+          onChange={f('notes')}
+          placeholder="Additional notes…"
+        />
+      </div>
+    </div>
+  )
 }
 
 // ─── Ticket Card ─────────────────────────────────────────────────────────────
@@ -120,7 +266,10 @@ const TicketCard: FC<{ ticket: Ticket; selected: boolean; onClick: () => void }>
 const TicketDetail: FC<{
   ticket: Ticket
   onStatusChange: (id: string, status: Ticket['status']) => void
-}> = ({ ticket, onStatusChange }) => {
+  onEdit: () => void
+  onClose: () => void
+  onDelete: () => void
+}> = ({ ticket, onStatusChange, onEdit, onClose, onDelete }) => {
   const [notes, setNotes] = useState(ticket.notes)
   const [actualCost, setActualCost] = useState(ticket.actualCost?.toString() ?? '')
   const pc = priorityConfig[ticket.priority as keyof typeof priorityConfig]
@@ -147,8 +296,8 @@ const TicketDetail: FC<{
           </div>
         </div>
 
-        {/* Status Selector */}
-        <div className="mt-3 flex items-center gap-2">
+        {/* Status Selector + Edit btn */}
+        <div className="mt-3 flex items-center gap-2 flex-wrap">
           <span className="text-xs text-navy-400">Status:</span>
           <select
             value={ticket.status}
@@ -161,6 +310,9 @@ const TicketDetail: FC<{
             <option value="scheduled">Scheduled</option>
             <option value="resolved">Resolved</option>
           </select>
+          <button onClick={onEdit} className="btn-secondary text-xs py-1.5 px-3">
+            Edit Ticket
+          </button>
         </div>
       </div>
 
@@ -286,12 +438,18 @@ const TicketDetail: FC<{
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 pt-1">
+        <div className="flex gap-2 pt-1 flex-wrap">
           <button className="btn-primary flex-1 justify-center text-xs py-2.5">
             <CheckCircle className="w-3.5 h-3.5" />Update Status
           </button>
-          <button className="btn-gold flex-1 justify-center text-xs py-2.5">
+          <button onClick={onClose} className="btn-gold flex-1 justify-center text-xs py-2.5">
             <CheckCircle className="w-3.5 h-3.5" />Close Ticket
+          </button>
+          <button
+            onClick={onDelete}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-terra-200 bg-terra-50 text-terra-600 text-xs font-medium hover:bg-terra-100"
+          >
+            <Trash2 className="w-3.5 h-3.5" /> Delete
           </button>
         </div>
       </div>
@@ -301,17 +459,98 @@ const TicketDetail: FC<{
 
 // ─── Main View ────────────────────────────────────────────────────────────────
 const MaintenanceTickets: FC = () => {
-  const [tickets, setTickets] = useState(maintenanceTickets)
-  const [selectedTicket, setSelectedTicket] = useState<Ticket>(maintenanceTickets[0])
+  const [tickets, setTickets] = useState(maintenanceTickets as Ticket[])
+  const [selectedTicket, setSelectedTicket] = useState<Ticket>(maintenanceTickets[0] as Ticket)
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('All')
   const [priorityFilter, setPriorityFilter] = useState('All')
+
+  const [createOpen, setCreateOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [closeId, setCloseId] = useState<string | null>(null)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [form, setForm] = useState<Partial<Ticket>>({})
 
   const handleStatusChange = (id: string, status: Ticket['status']) => {
     setTickets((prev) =>
       prev.map((t) => (t.id === id ? { ...t, status } : t)),
     )
     setSelectedTicket((prev) => (prev.id === id ? { ...prev, status } : prev))
+  }
+
+  const openCreate = () => {
+    setForm({})
+    setCreateOpen(true)
+  }
+
+  const openEdit = () => {
+    setForm({ ...selectedTicket })
+    setEditOpen(true)
+  }
+
+  const handleCreate = () => {
+    const selectedVendor = vendors.find((v) => v.id === form.vendorId)
+    const newTicket: Ticket = {
+      id: `TK${String(tickets.length + 1).padStart(3, '0')}`,
+      villa: form.villa ?? '',
+      villaId: villasMaster.find((v) => v.name === form.villa)?.id ?? '',
+      issue: form.issue ?? '',
+      category: form.category ?? '',
+      priority: (form.priority as Ticket['priority']) ?? 'medium',
+      status: 'open',
+      createdAt: 'Today',
+      createdBy: 'Made Suarjana',
+      assignedTo: selectedVendor?.name ?? null,
+      vendorId: form.vendorId ?? null,
+      estimatedCost: form.estimatedCost ?? null,
+      actualCost: null,
+      estimatedTime: form.estimatedTime ?? '',
+      aiDiagnosis: 'Pending AI analysis — submitted for review.',
+      slaDeadline: form.slaDeadline ?? '',
+      notes: form.notes ?? '',
+      photos: 0,
+    }
+    setTickets((prev) => [newTicket, ...prev])
+    setSelectedTicket(newTicket)
+    setCreateOpen(false)
+  }
+
+  const handleEdit = () => {
+    const selectedVendor = vendors.find((v) => v.id === form.vendorId)
+    setTickets((prev) =>
+      prev.map((t) =>
+        t.id === selectedTicket.id
+          ? {
+              ...t,
+              ...form,
+              assignedTo: selectedVendor?.name ?? t.assignedTo,
+            }
+          : t,
+      ),
+    )
+    setSelectedTicket((prev) => ({
+      ...prev,
+      ...form,
+      assignedTo: selectedVendor?.name ?? prev.assignedTo,
+    }))
+    setEditOpen(false)
+  }
+
+  const handleClose = () => {
+    setTickets((prev) =>
+      prev.map((t) => (t.id === closeId ? { ...t, status: 'resolved' } : t)),
+    )
+    if (selectedTicket.id === closeId) {
+      setSelectedTicket((prev) => ({ ...prev, status: 'resolved' }))
+    }
+    setCloseId(null)
+  }
+
+  const handleDelete = () => {
+    const remaining = tickets.filter((t) => t.id !== deleteId)
+    setTickets(remaining)
+    setSelectedTicket(remaining[0])
+    setDeleteId(null)
   }
 
   const filtered = tickets.filter((t) => {
@@ -358,7 +597,7 @@ const MaintenanceTickets: FC = () => {
 
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-2">
-        <button className="btn-primary py-2">
+        <button onClick={openCreate} className="btn-primary py-2">
           <Plus className="w-4 h-4" />New Ticket
         </button>
         <div className="relative">
@@ -457,9 +696,67 @@ const MaintenanceTickets: FC = () => {
           <TicketDetail
             ticket={selectedTicket}
             onStatusChange={handleStatusChange}
+            onEdit={openEdit}
+            onClose={() => setCloseId(selectedTicket?.id ?? null)}
+            onDelete={() => setDeleteId(selectedTicket?.id ?? null)}
           />
         </div>
       </div>
+
+      {/* Create Ticket Modal */}
+      <Modal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        title="Create Maintenance Ticket"
+        subtitle="Log a new issue and assign to a vendor"
+        size="xl"
+        footer={
+          <>
+            <button onClick={() => setCreateOpen(false)} className="btn-secondary">Cancel</button>
+            <button onClick={handleCreate} className="btn-primary">Create Ticket</button>
+          </>
+        }
+      >
+        <TicketForm form={form} onChange={(patch) => setForm((prev) => ({ ...prev, ...patch }))} />
+      </Modal>
+
+      {/* Edit Ticket Modal */}
+      <Modal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        title="Edit Ticket"
+        size="xl"
+        footer={
+          <>
+            <button onClick={() => setEditOpen(false)} className="btn-secondary">Cancel</button>
+            <button onClick={handleEdit} className="btn-primary">Save Changes</button>
+          </>
+        }
+      >
+        <TicketForm form={form} onChange={(patch) => setForm((prev) => ({ ...prev, ...patch }))} />
+      </Modal>
+
+      {/* Close Ticket Confirm */}
+      <ConfirmDialog
+        open={closeId !== null}
+        onClose={() => setCloseId(null)}
+        onConfirm={handleClose}
+        title="Close Ticket"
+        message="Mark this ticket as resolved? Confirm the final resolution."
+        confirmLabel="Close Ticket"
+        variant="warning"
+      />
+
+      {/* Delete Ticket Confirm */}
+      <ConfirmDialog
+        open={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDelete}
+        title="Delete Ticket"
+        message={`Permanently delete ticket ${tickets.find((t) => t.id === deleteId)?.id ?? ''}?`}
+        confirmLabel="Delete"
+        variant="danger"
+      />
     </div>
   )
 }

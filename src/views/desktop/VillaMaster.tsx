@@ -2,9 +2,11 @@ import { type FC, useState, useMemo } from 'react'
 import {
   Home, Plus, Search, ChevronDown, Bed, Users, Maximize2,
   CalendarDays, DollarSign, BarChart2, Wrench, Camera,
-  MapPin, User, ArrowRight, Edit2, BookOpen, ClipboardList
+  MapPin, User, ArrowRight, Edit2, BookOpen, ClipboardList, Trash2
 } from 'lucide-react'
 import { villasMaster } from '../../data/mockData'
+import Modal from '../../components/Modal'
+import ConfirmDialog from '../../components/ConfirmDialog'
 import clsx from 'clsx'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -67,6 +69,11 @@ const kpiAccent = {
 const ZONES: Zone[] = ['All', 'Seminyak', 'Canggu', 'Ubud', 'Jimbaran', 'Bukit']
 const STATUSES: (VillaStatus | 'All')[] = ['All', 'Occupied', 'Available', 'Maintenance', 'Cleaning']
 
+const AMENITY_OPTIONS = [
+  'Pool', 'AC', 'WiFi', 'Kitchen', 'Garden',
+  'BBQ', 'Gym', 'Spa', 'Ocean View', 'Jacuzzi',
+]
+
 // ─── Sub-components ───────────────────────────────────────────────────────────
 interface KPIBlockProps {
   label: string
@@ -92,26 +99,280 @@ const KPIBlock: FC<KPIBlockProps> = ({ label, value, sub, accent, icon }) => {
   )
 }
 
+// ─── Villa Form ───────────────────────────────────────────────────────────────
+interface VillaFormProps {
+  form: Partial<Villa>
+  setForm: React.Dispatch<React.SetStateAction<Partial<Villa>>>
+}
+
+const VillaForm: FC<VillaFormProps> = ({ form, setForm }) => {
+  const amenities = (form.amenities as string[]) || []
+
+  const toggleAmenity = (item: string) => {
+    setForm((prev) => {
+      const current = (prev.amenities as string[]) || []
+      return {
+        ...prev,
+        amenities: current.includes(item)
+          ? current.filter((a) => a !== item)
+          : [...current, item],
+      }
+    })
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="grid grid-cols-2 gap-4">
+        {/* Villa Name */}
+        <div className="col-span-2 md:col-span-1">
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">
+            Villa Name <span className="text-terra-500">*</span>
+          </label>
+          <input
+            type="text"
+            className="input-field"
+            placeholder="e.g. Villa Serenity"
+            value={form.name || ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+          />
+        </div>
+
+        {/* Zone */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Zone</label>
+          <select
+            className="input-field"
+            value={form.zone || ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, zone: e.target.value }))}
+          >
+            <option value="">Select zone…</option>
+            {(['Seminyak', 'Canggu', 'Ubud', 'Jimbaran', 'Bukit'] as const).map((z) => (
+              <option key={z} value={z}>{z}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Type */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Type</label>
+          <input
+            type="text"
+            className="input-field"
+            placeholder="Pool Villa, Heritage Villa…"
+            value={form.type || ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, type: e.target.value }))}
+          />
+        </div>
+
+        {/* Bedrooms */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Bedrooms</label>
+          <input
+            type="number"
+            className="input-field"
+            min={1}
+            value={form.bedrooms ?? ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, bedrooms: Number(e.target.value) }))}
+          />
+        </div>
+
+        {/* Max Guests */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Max Guests</label>
+          <input
+            type="number"
+            className="input-field"
+            min={1}
+            value={form.maxGuests ?? ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, maxGuests: Number(e.target.value) }))}
+          />
+        </div>
+
+        {/* Size */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Size m²</label>
+          <input
+            type="number"
+            className="input-field"
+            min={0}
+            value={form.size ?? ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, size: Number(e.target.value) }))}
+          />
+        </div>
+
+        {/* Year Built */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Year Built</label>
+          <input
+            type="number"
+            className="input-field"
+            value={form.yearBuilt ?? new Date().getFullYear()}
+            onChange={(e) => setForm((prev) => ({ ...prev, yearBuilt: Number(e.target.value) }))}
+          />
+        </div>
+
+        {/* Owner Name */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Owner Name</label>
+          <input
+            type="text"
+            className="input-field"
+            value={form.ownerName || ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, ownerName: e.target.value }))}
+          />
+        </div>
+
+        {/* Supervisor */}
+        <div>
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Supervisor</label>
+          <input
+            type="text"
+            className="input-field"
+            value={form.supervisor || ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, supervisor: e.target.value }))}
+          />
+        </div>
+
+        {/* Address */}
+        <div className="col-span-2">
+          <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Address</label>
+          <input
+            type="text"
+            className="input-field"
+            value={form.address || ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, address: e.target.value }))}
+          />
+        </div>
+      </div>
+
+      {/* Amenities */}
+      <div>
+        <label className="block text-xs font-medium text-cocoa-600 mb-2">Amenities</label>
+        <div className="grid grid-cols-3 gap-2">
+          {AMENITY_OPTIONS.map((item) => (
+            <label
+              key={item}
+              className="flex items-center gap-2 p-2 rounded-xl border border-sand-200 bg-sand-50 cursor-pointer hover:bg-sand-100 transition-colors text-xs text-cocoa-700 font-medium select-none"
+            >
+              <input
+                type="checkbox"
+                className="rounded border-sand-300 text-navy-700 focus:ring-navy-500"
+                checked={amenities.includes(item)}
+                onChange={() => toggleAmenity(item)}
+              />
+              {item}
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 const VillaMaster: FC = () => {
+  const [villas, setVillas] = useState<Villa[]>(villasMaster as Villa[])
   const [selectedVilla, setSelectedVilla] = useState<Villa>(villasMaster[0] as Villa)
   const [search, setSearch] = useState('')
   const [activeZone, setActiveZone] = useState<Zone>('All')
   const [statusFilter, setStatusFilter] = useState<VillaStatus | 'All'>('All')
   const [showStatusDropdown, setShowStatusDropdown] = useState(false)
-  const [showAccountNo, setShowAccountNo] = useState(false)
+
+  const [addOpen, setAddOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [form, setForm] = useState<Partial<Villa>>({})
 
   const filtered = useMemo(() => {
-    return (villasMaster as Villa[]).filter((v) => {
+    return villas.filter((v) => {
       const matchSearch = v.name.toLowerCase().includes(search.toLowerCase()) ||
         v.ownerName.toLowerCase().includes(search.toLowerCase())
       const matchZone = activeZone === 'All' || v.zone === activeZone
       const matchStatus = statusFilter === 'All' || v.status === statusFilter
       return matchSearch && matchZone && matchStatus
     })
-  }, [search, activeZone, statusFilter])
+  }, [villas, search, activeZone, statusFilter])
 
   const zoneColor = zoneColors[selectedVilla.zone] || zoneColors['Seminyak']
+
+  // ── Handlers ────────────────────────────────────────────────────────────────
+  const handleAdd = () => {
+    if (!form.name?.trim()) return
+    const newVilla: Villa = {
+      id: `VL${Date.now().toString().slice(-4)}`,
+      name: form.name.trim(),
+      zone: form.zone || 'Seminyak',
+      type: form.type || '',
+      bedrooms: form.bedrooms ?? 1,
+      maxGuests: form.maxGuests ?? 2,
+      size: form.size ?? 0,
+      yearBuilt: form.yearBuilt ?? new Date().getFullYear(),
+      ownerName: form.ownerName || '',
+      ownerId: '',
+      supervisor: form.supervisor || '',
+      address: form.address || '',
+      amenities: (form.amenities as string[]) || [],
+      status: 'Available',
+      monthlyRevenue: 0,
+      occupancyRate: 0,
+      maintenanceScore: 100,
+      photos: 0,
+      lastInspection: '—',
+      nextAvailable: 'Now',
+    }
+    setVillas((prev) => [newVilla, ...prev])
+    setSelectedVilla(newVilla)
+    setAddOpen(false)
+    setForm({})
+  }
+
+  const handleEdit = () => {
+    setVillas((prev) =>
+      prev.map((v) =>
+        v.id === selectedVilla.id
+          ? {
+              ...v,
+              name: form.name ?? v.name,
+              zone: form.zone ?? v.zone,
+              type: form.type ?? v.type,
+              bedrooms: form.bedrooms ?? v.bedrooms,
+              maxGuests: form.maxGuests ?? v.maxGuests,
+              size: form.size ?? v.size,
+              yearBuilt: form.yearBuilt ?? v.yearBuilt,
+              ownerName: form.ownerName ?? v.ownerName,
+              supervisor: form.supervisor ?? v.supervisor,
+              address: form.address ?? v.address,
+              amenities: (form.amenities as string[]) ?? v.amenities,
+            }
+          : v
+      )
+    )
+    setSelectedVilla((prev) => ({
+      ...prev,
+      name: form.name ?? prev.name,
+      zone: form.zone ?? prev.zone,
+      type: form.type ?? prev.type,
+      bedrooms: form.bedrooms ?? prev.bedrooms,
+      maxGuests: form.maxGuests ?? prev.maxGuests,
+      size: form.size ?? prev.size,
+      yearBuilt: form.yearBuilt ?? prev.yearBuilt,
+      ownerName: form.ownerName ?? prev.ownerName,
+      supervisor: form.supervisor ?? prev.supervisor,
+      address: form.address ?? prev.address,
+      amenities: (form.amenities as string[]) ?? prev.amenities,
+    }))
+    setEditOpen(false)
+    setForm({})
+  }
+
+  const handleArchive = () => {
+    const remaining = villas.filter((v) => v.id !== deleteId)
+    setVillas(remaining)
+    if (remaining.length > 0) {
+      setSelectedVilla(remaining[0])
+    }
+    setDeleteId(null)
+  }
 
   return (
     <div className="animate-fade-in h-full">
@@ -133,7 +394,10 @@ const VillaMaster: FC = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <button className="btn-primary whitespace-nowrap">
+              <button
+                className="btn-primary whitespace-nowrap"
+                onClick={() => { setForm({ yearBuilt: new Date().getFullYear(), amenities: [] }); setAddOpen(true) }}
+              >
                 <Plus className="w-4 h-4" />
                 Add Villa
               </button>
@@ -384,8 +648,11 @@ const VillaMaster: FC = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-3 pt-1">
-              <button className="btn-secondary">
+            <div className="flex items-center gap-3 pt-1 flex-wrap">
+              <button
+                onClick={() => { setForm({ ...selectedVilla }); setEditOpen(true) }}
+                className="btn-secondary"
+              >
                 <Edit2 className="w-4 h-4" />
                 Edit Villa
               </button>
@@ -397,10 +664,67 @@ const VillaMaster: FC = () => {
                 <Wrench className="w-4 h-4" />
                 Maintenance Tickets
               </button>
+              <button
+                onClick={() => setDeleteId(selectedVilla.id)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-terra-200 bg-terra-50 text-terra-600 text-xs font-medium hover:bg-terra-100 transition-colors"
+              >
+                <Trash2 className="w-3.5 h-3.5" /> Archive
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* ── Add Villa Modal ──────────────────────────────────────────────── */}
+      <Modal
+        open={addOpen}
+        onClose={() => { setAddOpen(false); setForm({}) }}
+        title="Add New Villa"
+        size="lg"
+        footer={
+          <>
+            <button onClick={() => { setAddOpen(false); setForm({}) }} className="btn-secondary">
+              Cancel
+            </button>
+            <button onClick={handleAdd} className="btn-primary">
+              Add Villa
+            </button>
+          </>
+        }
+      >
+        <VillaForm form={form} setForm={setForm} />
+      </Modal>
+
+      {/* ── Edit Villa Modal ─────────────────────────────────────────────── */}
+      <Modal
+        open={editOpen}
+        onClose={() => { setEditOpen(false); setForm({}) }}
+        title="Edit Villa"
+        size="lg"
+        footer={
+          <>
+            <button onClick={() => { setEditOpen(false); setForm({}) }} className="btn-secondary">
+              Cancel
+            </button>
+            <button onClick={handleEdit} className="btn-primary">
+              Save Changes
+            </button>
+          </>
+        }
+      >
+        <VillaForm form={form} setForm={setForm} />
+      </Modal>
+
+      {/* ── Archive Confirm Dialog ───────────────────────────────────────── */}
+      <ConfirmDialog
+        open={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleArchive}
+        title="Archive Villa"
+        message={`Archive ${villas.find((v) => v.id === deleteId)?.name ?? 'this villa'}? It will be removed from active portfolio.`}
+        confirmLabel="Archive"
+        variant="danger"
+      />
     </div>
   )
 }

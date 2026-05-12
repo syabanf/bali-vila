@@ -1,8 +1,35 @@
 import { type FC, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import { Search, Filter, AlertTriangle, Package, TrendingDown, Camera, ChevronDown } from 'lucide-react'
-import { inventoryItems } from '../../data/mockData'
+import { Search, Filter, AlertTriangle, Package, TrendingDown, Camera, ChevronDown, Plus, Edit2, Trash2 } from 'lucide-react'
+import { inventoryItems as inventoryData } from '../../data/mockData'
 import clsx from 'clsx'
+import Modal from '../../components/Modal'
+import ConfirmDialog from '../../components/ConfirmDialog'
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface InventoryItem {
+  id: string
+  villa: string
+  category: string
+  item: string
+  standard: number
+  current: number
+  diff: number
+  status: string
+  lastUpdate: string
+  updatedBy: string
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function computeStatus(diff: number): string {
+  if (diff >= 0) return 'OK'
+  if (diff >= -5) return 'Low'
+  return 'Critical'
+}
+
+// ─── Constants ────────────────────────────────────────────────────────────────
 
 const statusConfig = {
   OK: { badge: 'badge-success', dot: 'bg-teal-400' },
@@ -19,21 +46,196 @@ const varianceData = [
   { villa: 'V.Tebing 01', variance: -3, color: '#D4C4A0' },
 ]
 
+const VILLA_OPTIONS = [
+  'Villa Tirta 05',
+  'Villa Puri 12',
+  'Villa Sawah 03',
+  'Villa Lumbung 08',
+  'Villa Tebing 01',
+  'Villa Bukit 11',
+  'Villa Canggu 04',
+  'Villa Seminyak 07',
+]
+
+const CATEGORY_OPTIONS = ['Linen', 'Kitchen', 'Amenities', 'Consumables', 'Operational']
+
+// ─── Item Form ────────────────────────────────────────────────────────────────
+
+function ItemForm({
+  form,
+  onChange,
+}: {
+  form: Partial<InventoryItem>
+  onChange: (updated: Partial<InventoryItem>) => void
+}) {
+  const set = (field: keyof InventoryItem, value: string | number) =>
+    onChange({ ...form, [field]: value })
+
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Villa</label>
+        <select
+          className="input-field"
+          value={form.villa ?? ''}
+          onChange={e => set('villa', e.target.value)}
+        >
+          <option value="">Select villa…</option>
+          {VILLA_OPTIONS.map(v => (
+            <option key={v} value={v}>{v}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Category</label>
+        <select
+          className="input-field"
+          value={form.category ?? ''}
+          onChange={e => set('category', e.target.value)}
+        >
+          <option value="">Select category…</option>
+          {CATEGORY_OPTIONS.map(c => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Item Name *</label>
+        <input
+          type="text"
+          className="input-field"
+          value={form.item ?? ''}
+          onChange={e => set('item', e.target.value)}
+          placeholder="e.g. Bath Towels"
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Standard Qty</label>
+        <input
+          type="number"
+          min={0}
+          className="input-field"
+          value={form.standard ?? ''}
+          onChange={e => set('standard', Number(e.target.value))}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Current Qty</label>
+        <input
+          type="number"
+          min={0}
+          className="input-field"
+          value={form.current ?? ''}
+          onChange={e => set('current', Number(e.target.value))}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Updated By</label>
+        <input
+          type="text"
+          className="input-field"
+          value={form.updatedBy ?? ''}
+          onChange={e => set('updatedBy', e.target.value)}
+          placeholder="Staff name"
+        />
+      </div>
+    </div>
+  )
+}
+
+// ─── Main Component ────────────────────────────────────────────────────────────
+
 const InventoryManagement: FC = () => {
+  const [items, setItems] = useState<InventoryItem[]>(inventoryData as InventoryItem[])
   const [filter, setFilter] = useState('All')
   const categories = ['All', 'Linen', 'Kitchen', 'Amenities', 'Consumables', 'Operational']
 
-  const filtered = filter === 'All' ? inventoryItems : inventoryItems.filter(i => i.category === filter)
+  // CRUD state
+  const [addOpen, setAddOpen] = useState(false)
+  const [editItem, setEditItem] = useState<InventoryItem | null>(null)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [form, setForm] = useState<Partial<InventoryItem>>({})
+
+  const filtered = filter === 'All' ? items : items.filter(i => i.category === filter)
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
+
+  function openAdd() {
+    setForm({})
+    setAddOpen(true)
+  }
+
+  function handleAdd() {
+    const standard = form.standard ?? 0
+    const current = form.current ?? 0
+    const diff = current - standard
+    const newItem: InventoryItem = {
+      id: `I${Date.now().toString().slice(-3)}`,
+      villa: form.villa ?? '',
+      category: form.category ?? '',
+      item: form.item ?? 'New Item',
+      standard,
+      current,
+      diff,
+      status: computeStatus(diff),
+      lastUpdate: 'Just now',
+      updatedBy: form.updatedBy ?? '',
+    }
+    setItems(prev => [newItem, ...prev])
+    setAddOpen(false)
+  }
+
+  function openEdit(item: InventoryItem) {
+    setEditItem(item)
+    setForm({ ...item })
+  }
+
+  function handleEdit() {
+    if (!editItem) return
+    const standard = form.standard ?? editItem.standard
+    const current = form.current ?? editItem.current
+    const diff = current - standard
+    setItems(prev =>
+      prev.map(i =>
+        i.id === editItem.id
+          ? {
+              ...i,
+              villa: form.villa ?? i.villa,
+              category: form.category ?? i.category,
+              item: form.item ?? i.item,
+              standard,
+              current,
+              diff,
+              status: computeStatus(diff),
+              updatedBy: form.updatedBy ?? i.updatedBy,
+              lastUpdate: 'Just now',
+            }
+          : i,
+      ),
+    )
+    setEditItem(null)
+  }
+
+  function handleDelete() {
+    if (!deleteId) return
+    setItems(prev => prev.filter(i => i.id !== deleteId))
+    setDeleteId(null)
+  }
 
   return (
     <div className="space-y-5 animate-fade-in">
       {/* Summary KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: 'Items Tracked', value: '2,847', icon: Package, accent: 'navy' as const },
-          { label: 'Low Stock Items', value: '34', icon: AlertTriangle, accent: 'gold' as const },
-          { label: 'Critical Items', value: '8', icon: TrendingDown, accent: 'terra' as const },
-          { label: 'Breakage This Month', value: '7', icon: Camera, accent: 'terra' as const },
+          { label: 'Items Tracked', value: String(items.length), icon: Package, accent: 'navy' as const },
+          { label: 'Low Stock Items', value: String(items.filter(i => i.status === 'Low').length), icon: AlertTriangle, accent: 'gold' as const },
+          { label: 'Critical Items', value: String(items.filter(i => i.status === 'Critical').length), icon: TrendingDown, accent: 'terra' as const },
+          { label: 'Breakage This Month', value: String(items.filter(i => i.status === 'Breakage').length), icon: Camera, accent: 'terra' as const },
         ].map((item) => {
           const Icon = item.icon
           return (
@@ -59,6 +261,10 @@ const InventoryManagement: FC = () => {
                 <input type="text" placeholder="Search items…" className="input-field pl-9 py-2 text-xs w-48" />
               </div>
               <button className="btn-secondary text-xs py-2 px-3"><Filter className="w-3.5 h-3.5" /></button>
+              <button className="btn-primary text-xs py-2 px-3" onClick={openAdd}>
+                <Plus className="w-3.5 h-3.5" />
+                Add Item
+              </button>
             </div>
           </div>
 
@@ -90,13 +296,14 @@ const InventoryManagement: FC = () => {
                   <th className="table-header text-center">Diff</th>
                   <th className="table-header text-left">Status</th>
                   <th className="table-header text-left">Updated</th>
+                  <th className="table-header text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((item) => {
-                  const cfg = statusConfig[item.status as keyof typeof statusConfig]
+                  const cfg = statusConfig[item.status as keyof typeof statusConfig] ?? statusConfig.OK
                   return (
-                    <tr key={item.id} className="hover:bg-sand-50 transition-colors cursor-pointer">
+                    <tr key={item.id} className="hover:bg-sand-50 transition-colors">
                       <td className="table-cell font-medium text-navy-800">{item.villa}</td>
                       <td className="table-cell">
                         <span className="badge-info">{item.category}</span>
@@ -113,6 +320,24 @@ const InventoryManagement: FC = () => {
                       <td className="table-cell">
                         <div className="text-xs text-cocoa-400">{item.lastUpdate}</div>
                         <div className="text-xs text-cocoa-500 mt-0.5">{item.updatedBy}</div>
+                      </td>
+                      <td className="table-cell">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            onClick={() => openEdit(item)}
+                            className="btn-secondary p-1.5 rounded-lg"
+                            title="Edit item"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteId(item.id)}
+                            className="p-1.5 rounded-lg border border-terra-200 bg-terra-50 text-terra-600 hover:bg-terra-100 transition-colors"
+                            title="Delete item"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   )
@@ -166,6 +391,48 @@ const InventoryManagement: FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Add Item Modal */}
+      <Modal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        title="Add Inventory Item"
+        size="lg"
+        footer={
+          <>
+            <button className="btn-secondary" onClick={() => setAddOpen(false)}>Cancel</button>
+            <button className="btn-primary" onClick={handleAdd}>Add Item</button>
+          </>
+        }
+      >
+        <ItemForm form={form} onChange={setForm} />
+      </Modal>
+
+      {/* Edit Item Modal */}
+      <Modal
+        open={editItem !== null}
+        onClose={() => setEditItem(null)}
+        title="Edit Item"
+        size="lg"
+        footer={
+          <>
+            <button className="btn-secondary" onClick={() => setEditItem(null)}>Cancel</button>
+            <button className="btn-primary" onClick={handleEdit}>Save Changes</button>
+          </>
+        }
+      >
+        <ItemForm form={form} onChange={setForm} />
+      </Modal>
+
+      {/* Delete Confirm Dialog */}
+      <ConfirmDialog
+        open={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDelete}
+        title="Remove Item"
+        message={`Remove "${items.find(i => i.id === deleteId)?.item ?? ''}" from ${items.find(i => i.id === deleteId)?.villa ?? ''}?`}
+        variant="danger"
+      />
     </div>
   )
 }

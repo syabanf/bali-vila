@@ -1,10 +1,12 @@
 import { useState, useMemo, type FC } from 'react'
-import { bookings, villasMaster } from '../../data/mockData'
+import { bookings as bookingsData, villasMaster } from '../../data/mockData'
 import {
   Plus, Search, Calendar, CalendarCheck, Sparkles, Send,
   Wrench, ChevronDown, DollarSign, Users, CheckCircle2, Clock,
-  MapPin, MessageSquare, Filter,
+  MapPin, MessageSquare, Filter, XCircle, Edit2,
 } from 'lucide-react'
+import Modal from '../../components/Modal'
+import ConfirmDialog from '../../components/ConfirmDialog'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -66,9 +68,155 @@ function statusBadge(status: BookingStatus) {
   }
 }
 
+function makeAvatar(name: string): string {
+  return name.trim().split(/\s+/).slice(0, 2).map(w => w[0]?.toUpperCase() ?? '').join('')
+}
+
 const STATUS_FLOW: BookingStatus[] = ['Provisional', 'Confirmed', 'Checked In', 'Cancelled']
 const ALL_STATUSES: BookingStatus[] = ['Confirmed', 'Pending Payment', 'Provisional', 'Checked In', 'Cancelled']
 const ALL_CHANNELS: Channel[] = ['Direct', 'OTA', 'WhatsApp', 'Website', 'Referral']
+
+// ─── Booking Form ─────────────────────────────────────────────────────────────
+
+function BookingForm({
+  form,
+  onChange,
+}: {
+  form: Partial<Booking>
+  onChange: (updated: Partial<Booking>) => void
+}) {
+  const set = (field: keyof Booking, value: string | number) =>
+    onChange({ ...form, [field]: value })
+
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Guest Name *</label>
+        <input
+          type="text"
+          className="input-field"
+          value={form.guestName ?? ''}
+          onChange={e => set('guestName', e.target.value)}
+          placeholder="Full name"
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Nationality</label>
+        <input
+          type="text"
+          className="input-field"
+          value={form.guestNationality ?? ''}
+          onChange={e => set('guestNationality', e.target.value)}
+          placeholder="e.g. French"
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Villa</label>
+        <select
+          className="input-field"
+          value={form.villa ?? ''}
+          onChange={e => set('villa', e.target.value)}
+        >
+          <option value="">Select villa…</option>
+          {villasMaster.map(v => (
+            <option key={v.id} value={v.name}>{v.name}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Channel</label>
+        <select
+          className="input-field"
+          value={form.channel ?? ''}
+          onChange={e => set('channel', e.target.value)}
+        >
+          <option value="">Select channel…</option>
+          {ALL_CHANNELS.map(c => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Check-in Date</label>
+        <input
+          type="date"
+          className="input-field"
+          value={form.checkIn ?? ''}
+          onChange={e => set('checkIn', e.target.value)}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Check-out Date</label>
+        <input
+          type="date"
+          className="input-field"
+          value={form.checkOut ?? ''}
+          onChange={e => set('checkOut', e.target.value)}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Number of Guests</label>
+        <input
+          type="number"
+          min={1}
+          className="input-field"
+          value={form.guests ?? ''}
+          onChange={e => set('guests', Number(e.target.value))}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Total Value IDR</label>
+        <input
+          type="number"
+          min={0}
+          className="input-field"
+          value={form.value ?? ''}
+          onChange={e => set('value', Number(e.target.value))}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Deposit Paid IDR</label>
+        <input
+          type="number"
+          min={0}
+          className="input-field"
+          value={form.paid ?? ''}
+          onChange={e => set('paid', Number(e.target.value))}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Supervisor</label>
+        <input
+          type="text"
+          className="input-field"
+          value={form.supervisor ?? ''}
+          onChange={e => set('supervisor', e.target.value)}
+          placeholder="Supervisor name"
+        />
+      </div>
+
+      <div className="col-span-2 flex flex-col gap-1">
+        <label className="text-xs font-semibold text-cocoa-600">Special Notes</label>
+        <textarea
+          className="input-field resize-none"
+          rows={3}
+          value={form.notes ?? ''}
+          onChange={e => set('notes', e.target.value)}
+          placeholder="Special requests, dietary needs, etc."
+        />
+      </div>
+    </div>
+  )
+}
 
 // ─── Booking Row Card ─────────────────────────────────────────────────────────
 
@@ -137,7 +285,15 @@ function BookingCard({
 
 // ─── Booking Detail Panel ─────────────────────────────────────────────────────
 
-function BookingDetail({ booking }: { booking: Booking }) {
+function BookingDetail({
+  booking,
+  onEdit,
+  onCancel,
+}: {
+  booking: Booking
+  onEdit: () => void
+  onCancel: () => void
+}) {
   const [notes, setNotes] = useState(booking.notes)
   const [newStatus, setNewStatus] = useState<BookingStatus>(booking.status)
 
@@ -230,6 +386,20 @@ function BookingDetail({ booking }: { booking: Booking }) {
             </div>
             <div className="mt-2 text-xs text-cocoa-500">
               Supervisor: <span className="font-medium text-navy-700">{booking.supervisor}</span>
+            </div>
+            {/* Edit / Cancel actions */}
+            <div className="mt-3 flex gap-2">
+              <button onClick={onEdit} className="btn-secondary flex-1 justify-center text-xs py-1.5">
+                <Edit2 className="w-3.5 h-3.5" />
+                Edit Booking
+              </button>
+              <button
+                onClick={onCancel}
+                className="flex items-center gap-1.5 justify-center flex-1 text-xs py-1.5 px-3 rounded-xl border border-terra-200 bg-terra-50 text-terra-600 font-medium hover:bg-terra-100 transition-colors"
+              >
+                <XCircle className="w-3.5 h-3.5" />
+                Cancel Booking
+              </button>
             </div>
           </div>
         )}
@@ -341,15 +511,20 @@ function BookingDetail({ booking }: { booking: Booking }) {
 // ─── Main Component ────────────────────────────────────────────────────────────
 
 const BookingManagement: FC = () => {
-  const [selectedId, setSelectedId] = useState<string>(bookings[0].id)
+  const [bookingList, setBookingList] = useState<Booking[]>(bookingsData as Booking[])
+  const [selectedId, setSelectedId] = useState<string>(bookingsData[0].id)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<BookingStatus | 'All'>('All')
   const [channelFilter, setChannelFilter] = useState<Channel | 'All'>('All')
 
-  const typedBookings = bookings as Booking[]
+  // CRUD state
+  const [addOpen, setAddOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [cancelId, setCancelId] = useState<string | null>(null)
+  const [form, setForm] = useState<Partial<Booking>>({})
 
   const filtered = useMemo(() => {
-    return typedBookings.filter(b => {
+    return bookingList.filter(b => {
       const matchSearch =
         !search ||
         b.guestName.toLowerCase().includes(search.toLowerCase()) ||
@@ -358,9 +533,9 @@ const BookingManagement: FC = () => {
       const matchChannel = channelFilter === 'All' || b.channel === channelFilter
       return matchSearch && matchStatus && matchChannel
     })
-  }, [typedBookings, search, statusFilter, channelFilter])
+  }, [bookingList, search, statusFilter, channelFilter])
 
-  const selectedBooking = typedBookings.find(b => b.id === selectedId) ?? typedBookings[0]
+  const selectedBooking = bookingList.find(b => b.id === selectedId) ?? bookingList[0]
 
   const totalValue = filtered.reduce((s, b) => s + b.value, 0)
   const confirmedValue = filtered.filter(b => b.status === 'Confirmed' || b.status === 'Checked In').reduce((s, b) => s + b.value, 0)
@@ -368,6 +543,89 @@ const BookingManagement: FC = () => {
   const checkedIn = filtered.filter(b => b.status === 'Checked In').length
 
   const statusPills: (BookingStatus | 'All')[] = ['All', 'Confirmed', 'Checked In', 'Pending Payment', 'Provisional']
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
+
+  function openAdd() {
+    setForm({})
+    setAddOpen(true)
+  }
+
+  function handleAdd() {
+    const checkIn = form.checkIn ?? ''
+    const checkOut = form.checkOut ?? ''
+    const nights = checkIn && checkOut
+      ? Math.max(1, Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86_400_000))
+      : 1
+    const newBooking: Booking = {
+      id: `BK${Date.now().toString().slice(-3)}`,
+      guestName: form.guestName ?? 'New Guest',
+      guestAvatar: makeAvatar(form.guestName ?? 'NG'),
+      guestNationality: form.guestNationality ?? '',
+      villa: form.villa ?? '',
+      villaId: '',
+      checkIn,
+      checkOut,
+      nights,
+      guests: form.guests ?? 1,
+      channel: (form.channel as Channel) ?? 'Direct',
+      status: 'Confirmed',
+      value: form.value ?? 0,
+      paid: form.paid ?? 0,
+      notes: form.notes ?? '',
+      supervisor: form.supervisor ?? '',
+      createdAt: 'Today',
+    }
+    setBookingList(prev => [newBooking, ...prev])
+    setSelectedId(newBooking.id)
+    setAddOpen(false)
+  }
+
+  function openEdit() {
+    setForm({ ...selectedBooking })
+    setEditOpen(true)
+  }
+
+  function handleEdit() {
+    const checkIn = form.checkIn ?? selectedBooking.checkIn
+    const checkOut = form.checkOut ?? selectedBooking.checkOut
+    const nights = checkIn && checkOut
+      ? Math.max(1, Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86_400_000))
+      : selectedBooking.nights
+    setBookingList(prev =>
+      prev.map(b =>
+        b.id === selectedBooking.id
+          ? {
+              ...b,
+              guestName: form.guestName ?? b.guestName,
+              guestAvatar: makeAvatar(form.guestName ?? b.guestName),
+              guestNationality: form.guestNationality ?? b.guestNationality,
+              villa: form.villa ?? b.villa,
+              checkIn,
+              checkOut,
+              nights,
+              guests: form.guests ?? b.guests,
+              channel: (form.channel as Channel) ?? b.channel,
+              value: form.value ?? b.value,
+              paid: form.paid ?? b.paid,
+              notes: form.notes ?? b.notes,
+              supervisor: form.supervisor ?? b.supervisor,
+            }
+          : b,
+      ),
+    )
+    setEditOpen(false)
+  }
+
+  function handleCancel() {
+    if (!cancelId) return
+    setBookingList(prev => {
+      const next = prev.filter(b => b.id !== cancelId)
+      setSelectedId(next[0]?.id ?? '')
+      return next
+    })
+    setCancelId(null)
+  }
 
   return (
     <div className="animate-fade-in flex flex-col h-full space-y-4">
@@ -378,7 +636,7 @@ const BookingManagement: FC = () => {
             <h1 className="font-display text-3xl font-semibold text-navy-800">Booking Management</h1>
             <p className="text-sm text-cocoa-400 mt-0.5">Manage reservations, track payments, and coordinate guest stays</p>
           </div>
-          <button className="btn-primary">
+          <button className="btn-primary" onClick={openAdd}>
             <Plus className="w-4 h-4" />
             New Booking
           </button>
@@ -482,9 +740,61 @@ const BookingManagement: FC = () => {
 
         {/* Detail panel — col 5, sticky */}
         <div className="col-span-12 xl:col-span-5 xl:sticky xl:top-0 xl:self-start xl:max-h-screen xl:overflow-hidden">
-          <BookingDetail key={selectedBooking.id} booking={selectedBooking} />
+          {selectedBooking && (
+            <BookingDetail
+              key={selectedBooking.id}
+              booking={selectedBooking}
+              onEdit={openEdit}
+              onCancel={() => setCancelId(selectedBooking.id)}
+            />
+          )}
         </div>
       </div>
+
+      {/* Add Booking Modal */}
+      <Modal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        title="New Booking"
+        subtitle="Create a reservation"
+        size="xl"
+        footer={
+          <>
+            <button className="btn-secondary" onClick={() => setAddOpen(false)}>Cancel</button>
+            <button className="btn-primary" onClick={handleAdd}>Create Booking</button>
+          </>
+        }
+      >
+        <BookingForm form={form} onChange={setForm} />
+      </Modal>
+
+      {/* Edit Booking Modal */}
+      <Modal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        title="Edit Booking"
+        subtitle="Update reservation details"
+        size="xl"
+        footer={
+          <>
+            <button className="btn-secondary" onClick={() => setEditOpen(false)}>Cancel</button>
+            <button className="btn-primary" onClick={handleEdit}>Save Changes</button>
+          </>
+        }
+      >
+        <BookingForm form={form} onChange={setForm} />
+      </Modal>
+
+      {/* Cancel Confirm Dialog */}
+      <ConfirmDialog
+        open={cancelId !== null}
+        onClose={() => setCancelId(null)}
+        onConfirm={handleCancel}
+        title="Cancel Booking"
+        message={`Cancel ${bookingList.find(b => b.id === cancelId)?.guestName ?? ''}'s booking? The guest will be notified.`}
+        confirmLabel="Cancel Booking"
+        variant="danger"
+      />
     </div>
   )
 }

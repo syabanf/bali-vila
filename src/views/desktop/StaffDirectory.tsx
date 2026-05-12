@@ -1,9 +1,11 @@
 import { type FC, useState } from 'react'
 import {
   Search, UserPlus, Mail, Phone, Copy, Star, Calendar,
-  CheckCircle, Clock, Home, Activity, ChevronRight,
+  CheckCircle, Clock, Home, Activity, ChevronRight, UserMinus,
 } from 'lucide-react'
 import { staffDirectory } from '../../data/mockData'
+import Modal from '../../components/Modal'
+import ConfirmDialog from '../../components/ConfirmDialog'
 import clsx from 'clsx'
 
 type StaffMember = typeof staffDirectory[number]
@@ -31,7 +33,11 @@ const recentActivity = [
 ]
 
 // ─── Detail Panel ─────────────────────────────────────────────────────────────
-const StaffDetail: FC<{ staff: StaffMember }> = ({ staff }) => {
+const StaffDetail: FC<{
+  staff: StaffMember
+  onEdit: () => void
+  onDeactivate: () => void
+}> = ({ staff, onEdit, onDeactivate }) => {
   const sc = statusConfig[staff.status as keyof typeof statusConfig]
 
   const kpis = [
@@ -176,12 +182,18 @@ const StaffDetail: FC<{ staff: StaffMember }> = ({ staff }) => {
 
         {/* Action Buttons */}
         <div className="flex gap-2 pt-1">
-          <button className="btn-secondary flex-1 justify-center text-xs py-2.5">Edit Profile</button>
+          <button onClick={onEdit} className="btn-secondary flex-1 justify-center text-xs py-2.5">Edit Profile</button>
           <button className="btn-primary flex-1 justify-center text-xs py-2.5">
             <Home className="w-3.5 h-3.5" />Assign Villa
           </button>
           <button className="btn-gold flex-1 justify-center text-xs py-2.5">
             <Calendar className="w-3.5 h-3.5" />View Schedule
+          </button>
+          <button
+            onClick={onDeactivate}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-terra-200 bg-terra-50 text-terra-600 text-xs font-medium hover:bg-terra-100"
+          >
+            <UserMinus className="w-3.5 h-3.5" /> Deactivate
           </button>
         </div>
       </div>
@@ -234,13 +246,97 @@ const StaffCard: FC<{ staff: StaffMember; selected: boolean; onClick: () => void
   )
 }
 
+// ─── Staff Form ───────────────────────────────────────────────────────────────
+const StaffForm: FC<{
+  form: Partial<StaffMember>
+  onChange: (patch: Partial<StaffMember>) => void
+}> = ({ form, onChange }) => {
+  const f = (field: keyof StaffMember) => (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => onChange({ [field]: e.target.value } as Partial<StaffMember>)
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Full Name *</label>
+          <input type="text" className="input-field" value={form.name ?? ''} onChange={f('name')} placeholder="Full name" />
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Role</label>
+          <select className="input-field" value={form.role ?? ''} onChange={f('role')}>
+            <option value="">Select role…</option>
+            {['Supervisor', 'Housekeeper', 'MEP Technician', 'Pool Technician', 'Sales Executive', 'Sales Manager', 'Driver'].map((r) => (
+              <option key={r} value={r}>{r}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Department</label>
+          <select className="input-field" value={form.department ?? ''} onChange={f('department')}>
+            <option value="">Select department…</option>
+            {['Operations', 'Maintenance', 'Housekeeping', 'Sales'].map((d) => (
+              <option key={d} value={d}>{d}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Assigned Villa</label>
+          <input type="text" className="input-field" value={form.villa ?? ''} onChange={f('villa')} placeholder="Villa Tirta 05" />
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Shift</label>
+          <select className="input-field" value={form.shift ?? ''} onChange={f('shift')}>
+            <option value="">Select shift…</option>
+            {['Morning', 'Afternoon', 'All Day', 'Office Hours'].map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Phone</label>
+          <input type="tel" className="input-field" value={form.phone ?? ''} onChange={f('phone')} placeholder="+62 812-000-0000" />
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Email</label>
+          <input type="email" className="input-field" value={form.email ?? ''} onChange={f('email')} placeholder="name@bav.co.id" />
+        </div>
+        <div>
+          <label className="text-xs font-medium text-cocoa-600 mb-1 block">Join Date</label>
+          <input type="date" className="input-field" value={form.joinDate ?? ''} onChange={f('joinDate')} />
+        </div>
+      </div>
+      <div>
+        <label className="text-xs font-medium text-cocoa-600 mb-1 block">Certifications</label>
+        <input
+          type="text"
+          className="input-field w-full"
+          value={
+            typeof form.certifications === 'string'
+              ? form.certifications
+              : (form.certifications ?? []).join(', ')
+          }
+          onChange={(e) => onChange({ certifications: e.target.value as unknown as string[] })}
+          placeholder="First Aid, Supervisor L2"
+        />
+      </div>
+    </div>
+  )
+}
+
 // ─── Main View ────────────────────────────────────────────────────────────────
 const StaffDirectory: FC = () => {
-  const [selectedStaff, setSelectedStaff] = useState<StaffMember>(staffDirectory[0])
+  const [staff, setStaff] = useState(staffDirectory as StaffMember[])
+  const [selectedStaff, setSelectedStaff] = useState<StaffMember>(staffDirectory[0] as StaffMember)
   const [department, setDepartment] = useState('All')
   const [search, setSearch] = useState('')
 
-  const filtered = staffDirectory.filter((s) => {
+  const [addOpen, setAddOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [deactivateId, setDeactivateId] = useState<string | null>(null)
+  const [form, setForm] = useState<Partial<StaffMember>>({})
+
+  const filtered = staff.filter((s) => {
     const matchDept = department === 'All' || s.department === department
     const matchSearch =
       search === '' ||
@@ -248,6 +344,87 @@ const StaffDirectory: FC = () => {
       s.role.toLowerCase().includes(search.toLowerCase())
     return matchDept && matchSearch
   })
+
+  const openAdd = () => {
+    setForm({})
+    setAddOpen(true)
+  }
+
+  const openEdit = () => {
+    setForm({
+      ...selectedStaff,
+      certifications: selectedStaff.certifications.join(', ') as unknown as string[],
+    })
+    setEditOpen(true)
+  }
+
+  const handleAdd = () => {
+    if (!form.name) return
+    const rawCerts = typeof form.certifications === 'string'
+      ? (form.certifications as unknown as string)
+      : (form.certifications ?? []).join(', ')
+    const newMember: StaffMember = {
+      id: `SF${Date.now().toString().slice(-3)}`,
+      name: form.name ?? '',
+      role: form.role ?? '',
+      department: form.department ?? '',
+      villa: form.villa ?? '',
+      status: 'active',
+      phone: form.phone ?? '',
+      email: form.email ?? '',
+      joinDate: form.joinDate ?? '',
+      shift: form.shift ?? '',
+      taskCompletion: 0,
+      attendance: 100,
+      performanceScore: 0,
+      avatar: (form.name ?? '')
+        .split(' ')
+        .map((w: string) => w[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase(),
+      certifications: rawCerts
+        ? rawCerts.split(',').map((s: string) => s.trim()).filter(Boolean)
+        : [],
+    }
+    setStaff((prev) => [newMember, ...prev])
+    setSelectedStaff(newMember)
+    setAddOpen(false)
+  }
+
+  const handleEdit = () => {
+    const rawCerts = typeof form.certifications === 'string'
+      ? (form.certifications as unknown as string)
+      : (form.certifications ?? []).join(', ')
+    setStaff((prev) =>
+      prev.map((s) =>
+        s.id === selectedStaff.id
+          ? {
+              ...s,
+              ...form,
+              certifications: rawCerts
+                ? rawCerts.split(',').map((c: string) => c.trim()).filter(Boolean)
+                : s.certifications,
+            }
+          : s,
+      ),
+    )
+    setSelectedStaff((prev) => ({
+      ...prev,
+      ...form,
+      certifications: rawCerts
+        ? rawCerts.split(',').map((c: string) => c.trim()).filter(Boolean)
+        : prev.certifications,
+    }))
+    setEditOpen(false)
+  }
+
+  const handleDeactivate = () => {
+    const remaining = staff.filter((s) => s.id !== deactivateId)
+    setStaff(remaining)
+    setSelectedStaff(remaining[0])
+    setDeactivateId(null)
+  }
 
   return (
     <div className="space-y-5 animate-fade-in">
@@ -266,7 +443,7 @@ const StaffDirectory: FC = () => {
                 className="input-field pl-9 py-2 text-sm"
               />
             </div>
-            <button className="btn-primary py-2 px-3 whitespace-nowrap">
+            <button onClick={openAdd} className="btn-primary py-2 px-3 whitespace-nowrap">
               <UserPlus className="w-4 h-4" />
               Add Staff
             </button>
@@ -314,9 +491,56 @@ const StaffDirectory: FC = () => {
 
         {/* Right — Detail Panel */}
         <div className="col-span-12 xl:col-span-8 sticky top-20">
-          <StaffDetail staff={selectedStaff} />
+          <StaffDetail
+            staff={selectedStaff}
+            onEdit={openEdit}
+            onDeactivate={() => setDeactivateId(selectedStaff.id)}
+          />
         </div>
       </div>
+
+      {/* Add Staff Modal */}
+      <Modal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        title="Add Staff Member"
+        size="lg"
+        footer={
+          <>
+            <button onClick={() => setAddOpen(false)} className="btn-secondary">Cancel</button>
+            <button onClick={handleAdd} className="btn-primary">Add Staff Member</button>
+          </>
+        }
+      >
+        <StaffForm form={form} onChange={(patch) => setForm((prev) => ({ ...prev, ...patch }))} />
+      </Modal>
+
+      {/* Edit Staff Modal */}
+      <Modal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        title="Edit Staff Member"
+        size="lg"
+        footer={
+          <>
+            <button onClick={() => setEditOpen(false)} className="btn-secondary">Cancel</button>
+            <button onClick={handleEdit} className="btn-primary">Save Changes</button>
+          </>
+        }
+      >
+        <StaffForm form={form} onChange={(patch) => setForm((prev) => ({ ...prev, ...patch }))} />
+      </Modal>
+
+      {/* Deactivate Confirm */}
+      <ConfirmDialog
+        open={deactivateId !== null}
+        onClose={() => setDeactivateId(null)}
+        onConfirm={handleDeactivate}
+        title="Deactivate Staff Member"
+        message={`${staff.find((s) => s.id === deactivateId)?.name ?? 'This staff member'} will be marked inactive.`}
+        confirmLabel="Deactivate"
+        variant="danger"
+      />
     </div>
   )
 }

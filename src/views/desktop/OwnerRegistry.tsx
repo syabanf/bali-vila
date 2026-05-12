@@ -2,9 +2,11 @@ import { type FC, useState, useMemo } from 'react'
 import {
   Plus, Search, Home, DollarSign, FileText, Edit2,
   Send, Download, Eye, EyeOff, Mail, Phone, Building2,
-  CalendarDays, Globe, StickyNote, ChevronRight
+  CalendarDays, Globe, StickyNote, ChevronRight, Trash2
 } from 'lucide-react'
-import { owners, ownerStatements, villasMaster } from '../../data/mockData'
+import { owners as ownersData, ownerStatements, villasMaster } from '../../data/mockData'
+import Modal from '../../components/Modal'
+import ConfirmDialog from '../../components/ConfirmDialog'
 import clsx from 'clsx'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -75,7 +77,9 @@ const villaStatusBadge: Record<string, string> = {
 }
 
 function getInitials(name: string): string {
-  return name.split(' ').slice(0, 2).map((n) => n[0]).join('')
+  const words = name.trim().split(/\s+/)
+  if (words.length === 1) return words[0][0]?.toUpperCase() ?? ''
+  return ((words[0][0] ?? '') + (words[words.length - 1][0] ?? '')).toUpperCase()
 }
 
 function formatIDR(amount: number): string {
@@ -84,21 +88,144 @@ function formatIDR(amount: number): string {
   return `IDR ${amount.toLocaleString()}`
 }
 
+function currentMonthYear(): string {
+  return new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+}
+
+// ─── Owner Form ───────────────────────────────────────────────────────────────
+interface OwnerFormProps {
+  form: Partial<Owner>
+  setForm: React.Dispatch<React.SetStateAction<Partial<Owner>>>
+}
+
+const OwnerForm: FC<OwnerFormProps> = ({ form, setForm }) => (
+  <div className="space-y-4">
+    <div className="grid grid-cols-2 gap-4">
+      {/* Full Name */}
+      <div>
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">
+          Full Name <span className="text-terra-500">*</span>
+        </label>
+        <input
+          type="text"
+          className="input-field"
+          placeholder="e.g. Budi Santoso"
+          value={form.name || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+        />
+      </div>
+
+      {/* Nationality */}
+      <div>
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Nationality</label>
+        <input
+          type="text"
+          className="input-field"
+          placeholder="e.g. Indonesian"
+          value={form.nationality || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, nationality: e.target.value }))}
+        />
+      </div>
+
+      {/* Email */}
+      <div>
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Email</label>
+        <input
+          type="email"
+          className="input-field"
+          placeholder="owner@example.com"
+          value={form.email || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
+        />
+      </div>
+
+      {/* Phone */}
+      <div>
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Phone</label>
+        <input
+          type="tel"
+          className="input-field"
+          placeholder="+62 812 3456 7890"
+          value={form.phone || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
+        />
+      </div>
+
+      {/* Contract Type */}
+      <div>
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Contract Type</label>
+        <select
+          className="input-field"
+          value={form.contractType || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, contractType: e.target.value }))}
+        >
+          <option value="">Select contract…</option>
+          <option value="Full Management">Full Management</option>
+          <option value="Revenue Share 80/20">Revenue Share 80/20</option>
+          <option value="Revenue Share 75/25">Revenue Share 75/25</option>
+        </select>
+      </div>
+
+      {/* Bank Name */}
+      <div>
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Bank Name</label>
+        <input
+          type="text"
+          className="input-field"
+          placeholder="e.g. BCA"
+          value={form.bankName || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, bankName: e.target.value }))}
+        />
+      </div>
+
+      {/* Account Number */}
+      <div className="col-span-2 md:col-span-1">
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Account Number</label>
+        <input
+          type="text"
+          className="input-field"
+          placeholder="e.g. 1234567890"
+          value={form.accountNo || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, accountNo: e.target.value }))}
+        />
+      </div>
+
+      {/* Notes */}
+      <div className="col-span-2">
+        <label className="block text-xs font-medium text-cocoa-600 mb-1.5">Notes</label>
+        <textarea
+          className="input-field resize-none"
+          rows={3}
+          placeholder="Additional notes about the owner…"
+          value={form.notes || ''}
+          onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
+        />
+      </div>
+    </div>
+  </div>
+)
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 const OwnerRegistry: FC = () => {
-  const [selectedOwner, setSelectedOwner] = useState<Owner>(owners[0] as Owner)
+  const [ownerList, setOwnerList] = useState<Owner[]>(ownersData as Owner[])
+  const [selectedOwner, setSelectedOwner] = useState<Owner>(ownersData[0] as Owner)
   const [search, setSearch] = useState('')
   const [showAccountNo, setShowAccountNo] = useState(false)
 
+  const [addOpen, setAddOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [form, setForm] = useState<Partial<Owner>>({})
+
   const filteredOwners = useMemo(() => {
     const q = search.toLowerCase()
-    return (owners as Owner[]).filter(
+    return ownerList.filter(
       (o) =>
         o.name.toLowerCase().includes(q) ||
         o.nationality.toLowerCase().includes(q) ||
         o.email.toLowerCase().includes(q)
     )
-  }, [search])
+  }, [ownerList, search])
 
   // Villas owned by selected owner
   const ownedVillas = useMemo(() => {
@@ -120,6 +247,61 @@ const OwnerRegistry: FC = () => {
 
   const flag = nationalityFlag[selectedOwner.nationality] ?? '🌐'
 
+  // ── Handlers ────────────────────────────────────────────────────────────────
+  const handleAdd = () => {
+    if (!form.name?.trim()) return
+    const newOwner: Owner = {
+      id: `OW${Date.now().toString().slice(-4)}`,
+      name: form.name.trim(),
+      nationality: form.nationality || '',
+      email: form.email || '',
+      phone: form.phone || '',
+      contractType: form.contractType || '',
+      bankName: form.bankName || '',
+      accountNo: form.accountNo || '',
+      notes: form.notes || '',
+      avatar: getInitials(form.name.trim()),
+      status: 'Active',
+      totalVillas: 0,
+      totalRevenue: 0,
+      joinDate: currentMonthYear(),
+      villas: [],
+    }
+    setOwnerList((prev) => [newOwner, ...prev])
+    setSelectedOwner(newOwner)
+    setAddOpen(false)
+    setForm({})
+  }
+
+  const handleEdit = () => {
+    const updated: Owner = {
+      ...selectedOwner,
+      name: form.name ?? selectedOwner.name,
+      nationality: form.nationality ?? selectedOwner.nationality,
+      email: form.email ?? selectedOwner.email,
+      phone: form.phone ?? selectedOwner.phone,
+      contractType: form.contractType ?? selectedOwner.contractType,
+      bankName: form.bankName ?? selectedOwner.bankName,
+      accountNo: form.accountNo ?? selectedOwner.accountNo,
+      notes: form.notes ?? selectedOwner.notes,
+    }
+    setOwnerList((prev) =>
+      prev.map((o) => (o.id === selectedOwner.id ? updated : o))
+    )
+    setSelectedOwner(updated)
+    setEditOpen(false)
+    setForm({})
+  }
+
+  const handleRemove = () => {
+    const remaining = ownerList.filter((o) => o.id !== deleteId)
+    setOwnerList(remaining)
+    if (remaining.length > 0) {
+      setSelectedOwner(remaining[0])
+    }
+    setDeleteId(null)
+  }
+
   return (
     <div className="animate-fade-in h-full">
       <div className="grid grid-cols-12 gap-4 h-full">
@@ -140,7 +322,10 @@ const OwnerRegistry: FC = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <button className="btn-primary whitespace-nowrap">
+              <button
+                className="btn-primary whitespace-nowrap"
+                onClick={() => { setForm({}); setAddOpen(true) }}
+              >
                 <Plus className="w-4 h-4" />
                 Add Owner
               </button>
@@ -408,12 +593,15 @@ const OwnerRegistry: FC = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-3 pt-1">
+            <div className="flex items-center gap-3 pt-1 flex-wrap">
               <button className="btn-primary">
                 <Send className="w-4 h-4" />
                 Send Statement
               </button>
-              <button className="btn-secondary">
+              <button
+                onClick={() => { setForm({ ...selectedOwner }); setEditOpen(true) }}
+                className="btn-secondary"
+              >
                 <Edit2 className="w-4 h-4" />
                 Edit Owner
               </button>
@@ -421,10 +609,67 @@ const OwnerRegistry: FC = () => {
                 <Download className="w-4 h-4" />
                 Export History
               </button>
+              <button
+                onClick={() => setDeleteId(selectedOwner.id)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-terra-200 bg-terra-50 text-terra-600 text-xs font-medium hover:bg-terra-100 transition-colors"
+              >
+                <Trash2 className="w-3.5 h-3.5" /> Remove Owner
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* ── Add Owner Modal ──────────────────────────────────────────────── */}
+      <Modal
+        open={addOpen}
+        onClose={() => { setAddOpen(false); setForm({}) }}
+        title="Add New Owner"
+        size="lg"
+        footer={
+          <>
+            <button onClick={() => { setAddOpen(false); setForm({}) }} className="btn-secondary">
+              Cancel
+            </button>
+            <button onClick={handleAdd} className="btn-primary">
+              Add Owner
+            </button>
+          </>
+        }
+      >
+        <OwnerForm form={form} setForm={setForm} />
+      </Modal>
+
+      {/* ── Edit Owner Modal ─────────────────────────────────────────────── */}
+      <Modal
+        open={editOpen}
+        onClose={() => { setEditOpen(false); setForm({}) }}
+        title="Edit Owner"
+        size="lg"
+        footer={
+          <>
+            <button onClick={() => { setEditOpen(false); setForm({}) }} className="btn-secondary">
+              Cancel
+            </button>
+            <button onClick={handleEdit} className="btn-primary">
+              Save Changes
+            </button>
+          </>
+        }
+      >
+        <OwnerForm form={form} setForm={setForm} />
+      </Modal>
+
+      {/* ── Remove Owner Confirm Dialog ──────────────────────────────────── */}
+      <ConfirmDialog
+        open={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleRemove}
+        title="Remove Owner"
+        message={`Remove ${ownerList.find((o) => o.id === deleteId)?.name ?? 'this owner'} from the registry? This action cannot be undone.`}
+        confirmLabel="Remove Owner"
+        variant="danger"
+      />
     </div>
   )
 }
