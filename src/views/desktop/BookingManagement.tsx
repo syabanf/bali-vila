@@ -235,12 +235,12 @@ function BookingCard({
       className={`p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
         selected
           ? 'border-navy-400 bg-navy-50 ring-2 ring-navy-200 shadow-card'
-          : 'border-sand-200 bg-white hover:border-navy-200 hover:shadow-card'
+          : 'border-sand-300 bg-white hover:border-navy-200 hover:shadow-card'
       }`}
     >
       <div className="flex items-start gap-3">
         {/* Avatar */}
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-navy-100 to-navy-200 flex items-center justify-center text-navy-800 font-display font-semibold text-sm flex-shrink-0">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-navy-100 to-navy-200 flex items-center justify-center text-cocoa-800 font-display font-semibold text-sm flex-shrink-0">
           {booking.guestAvatar}
         </div>
 
@@ -248,8 +248,8 @@ function BookingCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <div className="font-semibold text-navy-800 text-sm leading-tight">{booking.guestName}</div>
-              <div className="text-xs text-cocoa-400 mt-0.5">{booking.guestNationality} · Added {booking.createdAt}</div>
+              <div className="font-semibold text-cocoa-800 text-sm leading-tight">{booking.guestName}</div>
+              <div className="text-xs text-cocoa-500 mt-0.5">{booking.guestNationality} · Added {booking.createdAt}</div>
             </div>
             <div className="flex-shrink-0">
               <span className={statusBadge(booking.status)}>{booking.status}</span>
@@ -270,7 +270,7 @@ function BookingCard({
           </div>
 
           <div className="flex items-center justify-between mt-2">
-            <span className="font-display text-sm font-semibold text-navy-800">{formatIDR(booking.value)}</span>
+            <span className="font-display text-sm font-semibold text-cocoa-800">{formatIDR(booking.value)}</span>
             {booking.paid < booking.value && (
               <span className="text-xs text-gold-700 font-medium">
                 {formatIDR(booking.paid)} paid
@@ -303,7 +303,7 @@ function BookingDetail({
   const currentStepIndex = STATUS_FLOW.indexOf(booking.status)
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+    <div className="h-full flex flex-col bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-br from-navy-800 to-navy-700 p-6">
         <div className="flex items-center gap-4">
@@ -340,8 +340,8 @@ function BookingDetail({
             { icon: <DollarSign className="w-4 h-4" />, label: 'Total Value', value: formatIDR(booking.value), color: 'text-navy-700' },
             { icon: <CheckCircle2 className="w-4 h-4" />, label: 'Paid', value: formatIDR(booking.paid), color: paymentPct === 100 ? 'text-teal-600' : 'text-gold-700' },
           ].map(stat => (
-            <div key={stat.label} className="bg-sand-50 rounded-xl p-3 border border-sand-200">
-              <div className="flex items-center gap-1.5 text-cocoa-400 mb-1">
+            <div key={stat.label} className="bg-sand-50 rounded-xl p-3 border border-sand-300">
+              <div className="flex items-center gap-1.5 text-cocoa-500 mb-1">
                 {stat.icon}
                 <span className="text-xs">{stat.label}</span>
               </div>
@@ -356,13 +356,13 @@ function BookingDetail({
             <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wide">Payment Progress</span>
             <span className="text-xs font-bold text-navy-700">{paymentPct}%</span>
           </div>
-          <div className="h-2 bg-sand-100 rounded-full overflow-hidden border border-sand-200">
+          <div className="h-2 bg-sand-100 rounded-full overflow-hidden border border-sand-300">
             <div
               className="h-full rounded-full bg-gradient-to-r from-teal-500 to-teal-400 transition-all duration-500"
               style={{ width: `${paymentPct}%` }}
             />
           </div>
-          <div className="flex items-center justify-between mt-1 text-xs text-cocoa-400">
+          <div className="flex items-center justify-between mt-1 text-xs text-cocoa-500">
             <span>{formatIDR(booking.paid)} paid</span>
             <span>{formatIDR(booking.value - booking.paid)} remaining</span>
           </div>
@@ -370,13 +370,13 @@ function BookingDetail({
 
         {/* Villa info */}
         {villa && (
-          <div className="bg-sand-50 rounded-xl p-4 border border-sand-200">
+          <div className="bg-sand-50 rounded-xl p-4 border border-sand-300">
             <div className="flex items-center gap-2 mb-2">
-              <MapPin className="w-4 h-4 text-cocoa-400" />
+              <MapPin className="w-4 h-4 text-cocoa-500" />
               <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wide">Villa</span>
             </div>
-            <div className="font-semibold text-navy-800">{villa.name}</div>
-            <div className="text-xs text-cocoa-400 mt-0.5">{villa.zone} · {villa.type}</div>
+            <div className="font-semibold text-cocoa-800">{villa.name}</div>
+            <div className="text-xs text-cocoa-500 mt-0.5">{villa.zone} · {villa.type}</div>
             <div className="mt-2 flex items-center gap-2 text-xs text-cocoa-500">
               <span className="inline-flex items-center gap-1">
                 <Users className="w-3 h-3" /> Max {villa.maxGuests} guests
@@ -415,7 +415,7 @@ function BookingDetail({
 
           <div>
             <div className="flex items-center gap-1.5 mb-1.5">
-              <MessageSquare className="w-3.5 h-3.5 text-cocoa-400" />
+              <MessageSquare className="w-3.5 h-3.5 text-cocoa-500" />
               <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wide">Notes</span>
             </div>
             <textarea
@@ -471,7 +471,7 @@ function BookingDetail({
                       {isPast && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                       {isActive && <div className="w-2 h-2 rounded-full bg-white" />}
                     </div>
-                    <div className={`text-center mt-1 leading-tight ${isActive ? 'text-navy-800 font-semibold' : isPast ? 'text-teal-600' : 'text-cocoa-300'}`}
+                    <div className={`text-center mt-1 leading-tight ${isActive ? 'text-cocoa-800 font-semibold' : isPast ? 'text-teal-600' : 'text-cocoa-300'}`}
                       style={{ fontSize: '9px' }}>
                       {step}
                     </div>
@@ -496,7 +496,7 @@ function BookingDetail({
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
-              <ChevronDown className="w-4 h-4 text-cocoa-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <ChevronDown className="w-4 h-4 text-cocoa-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
             <button className="btn-primary flex-shrink-0">
               Update
@@ -633,8 +633,8 @@ const BookingManagement: FC = () => {
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="font-display text-3xl font-semibold text-navy-800">Booking Management</h1>
-            <p className="text-sm text-cocoa-400 mt-0.5">Manage reservations, track payments, and coordinate guest stays</p>
+            <h1 className="font-display text-3xl font-semibold text-cocoa-800">Booking Management</h1>
+            <p className="text-sm text-cocoa-500 mt-0.5">Manage reservations, track payments, and coordinate guest stays</p>
           </div>
           <button className="btn-primary" onClick={openAdd}>
             <Plus className="w-4 h-4" />
@@ -646,7 +646,7 @@ const BookingManagement: FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           {/* Search */}
           <div className="relative flex-1 min-w-48">
-            <Search className="w-4 h-4 text-cocoa-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-cocoa-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={search}
@@ -657,14 +657,14 @@ const BookingManagement: FC = () => {
           </div>
 
           {/* Status pills */}
-          <div className="flex items-center gap-1 bg-sand-100 rounded-xl p-1 border border-sand-200">
+          <div className="flex items-center gap-1 bg-sand-100 rounded-xl p-1 border border-sand-300">
             {statusPills.map(s => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
                   statusFilter === s
-                    ? 'bg-white text-navy-800 shadow-sm border border-sand-200'
+                    ? 'bg-white text-cocoa-800 shadow-sm border border-sand-300'
                     : 'text-cocoa-500 hover:text-navy-700'
                 }`}
               >
@@ -675,7 +675,7 @@ const BookingManagement: FC = () => {
 
           {/* Channel dropdown */}
           <div className="relative">
-            <Filter className="w-3.5 h-3.5 text-cocoa-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Filter className="w-3.5 h-3.5 text-cocoa-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <select
               value={channelFilter}
               onChange={e => setChannelFilter(e.target.value as Channel | 'All')}
@@ -684,13 +684,13 @@ const BookingManagement: FC = () => {
               <option value="All">All Channels</option>
               {ALL_CHANNELS.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
-            <ChevronDown className="w-3.5 h-3.5 text-cocoa-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-cocoa-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
           {/* Count + value */}
           <div className="text-sm text-cocoa-500 ml-auto hidden lg:block">
             <span className="font-semibold text-navy-700">{filtered.length}</span> bookings ·{' '}
-            <span className="font-display font-semibold text-navy-800">{formatIDR(totalValue)}</span>
+            <span className="font-display font-semibold text-cocoa-800">{formatIDR(totalValue)}</span>
           </div>
         </div>
       </div>
@@ -703,13 +703,13 @@ const BookingManagement: FC = () => {
           { label: 'Pending Value', value: formatIDR(pendingValue), icon: <Clock className="w-4 h-4" />, accent: 'bg-gold-50 text-gold-700' },
           { label: 'Active Stays', value: String(checkedIn), icon: <Users className="w-4 h-4" />, accent: 'bg-terra-50 text-terra-700' },
         ].map(k => (
-          <div key={k.label} className="bg-white rounded-2xl border border-sand-200 shadow-card p-4 flex items-center gap-3">
+          <div key={k.label} className="bg-white rounded-2xl border border-sand-300 shadow-card p-4 flex items-center gap-3">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${k.accent}`}>
               {k.icon}
             </div>
             <div>
-              <div className="font-display text-xl font-semibold text-navy-800 leading-tight">{k.value}</div>
-              <div className="text-xs text-cocoa-400">{k.label}</div>
+              <div className="font-display text-xl font-semibold text-cocoa-800 leading-tight">{k.value}</div>
+              <div className="text-xs text-cocoa-500">{k.label}</div>
             </div>
           </div>
         ))}
@@ -721,7 +721,7 @@ const BookingManagement: FC = () => {
         <div className="col-span-12 xl:col-span-7 flex flex-col min-h-0">
           <div className="flex-1 overflow-y-auto space-y-2.5 pr-1">
             {filtered.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-10 text-center">
+              <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-10 text-center">
                 <Search className="w-8 h-8 text-sand-400 mx-auto mb-3" />
                 <p className="text-sm text-cocoa-500">No bookings match your filters</p>
               </div>

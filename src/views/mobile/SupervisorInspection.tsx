@@ -96,7 +96,7 @@ const SupervisorInspection: FC = () => {
                 'flex-shrink-0 text-xs px-3 py-2 rounded-full font-medium border transition-all duration-200',
                 activeSection === section.title
                   ? 'bg-navy-800 text-white border-navy-800'
-                  : allDone ? 'bg-teal-50 text-teal-700 border-teal-200' : 'bg-white text-cocoa-600 border-sand-200'
+                  : allDone ? 'bg-teal-50 text-teal-700 border-teal-200' : 'bg-white text-cocoa-600 border-sand-300'
               )}
             >
               {allDone && <CheckCircle className="w-3 h-3 mr-1 inline-block" />}{section.title}
@@ -115,7 +115,7 @@ const SupervisorInspection: FC = () => {
               onClick={() => toggleItem(item)}
               className={clsx(
                 'w-full flex items-center gap-3 p-4 rounded-2xl border bg-white shadow-card transition-all duration-200 active:scale-98',
-                done ? 'border-teal-200 bg-teal-50' : 'border-sand-200 hover:border-navy-200'
+                done ? 'border-teal-200 bg-teal-50' : 'border-sand-300 hover:border-navy-200'
               )}
             >
               {done
@@ -126,7 +126,7 @@ const SupervisorInspection: FC = () => {
                 {item}
               </span>
               {item.includes('Photo') && (
-                <div className="flex items-center gap-1 text-xs text-cocoa-400">
+                <div className="flex items-center gap-1 text-xs text-cocoa-500">
                   <Camera className="w-3.5 h-3.5" />
                   Upload
                 </div>
@@ -140,11 +140,11 @@ const SupervisorInspection: FC = () => {
       <div className="px-4 mt-4">
         <button className="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-dashed border-sand-300 bg-white text-center hover:border-navy-300 transition-colors">
           <div className="w-10 h-10 rounded-xl bg-sand-100 flex items-center justify-center">
-            <Camera className="w-5 h-5 text-cocoa-400" />
+            <Camera className="w-5 h-5 text-cocoa-500" />
           </div>
           <div className="text-left">
             <div className="text-sm font-semibold text-navy-700">Upload inspection photos</div>
-            <div className="text-xs text-cocoa-400">Tap to take photo or upload from gallery</div>
+            <div className="text-xs text-cocoa-500">Tap to take photo or upload from gallery</div>
           </div>
         </button>
       </div>

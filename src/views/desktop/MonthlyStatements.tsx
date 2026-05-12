@@ -17,29 +17,29 @@ const MonthlyStatements: FC = () => {
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="kpi-card">
-          <div className="font-display text-3xl font-semibold text-navy-800">247</div>
-          <div className="text-xs text-cocoa-400 mt-1">Statements to generate</div>
+          <div className="font-display text-3xl font-semibold text-cocoa-800">247</div>
+          <div className="text-xs text-cocoa-500 mt-1">Statements to generate</div>
         </div>
         <div className="kpi-card">
           <div className="font-display text-3xl font-semibold text-teal-600">189</div>
-          <div className="text-xs text-cocoa-400 mt-1">Ready to send</div>
+          <div className="text-xs text-cocoa-500 mt-1">Ready to send</div>
         </div>
         <div className="kpi-card">
           <div className="font-display text-3xl font-semibold text-gold-700">42</div>
-          <div className="text-xs text-cocoa-400 mt-1">Pending review</div>
+          <div className="text-xs text-cocoa-500 mt-1">Pending review</div>
         </div>
         <div className="kpi-card">
-          <div className="font-display text-3xl font-semibold text-navy-800">IDR 4.8B</div>
-          <div className="text-xs text-cocoa-400 mt-1">Total net payable this month</div>
+          <div className="font-display text-3xl font-semibold text-cocoa-800">IDR 4.8B</div>
+          <div className="text-xs text-cocoa-500 mt-1">Total net payable this month</div>
         </div>
       </div>
 
       <div className="grid grid-cols-12 gap-4">
         {/* Statement List */}
-        <div className="col-span-12 md:col-span-4 xl:col-span-4 bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+        <div className="col-span-12 md:col-span-4 xl:col-span-4 bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
           <div className="p-4 border-b border-sand-100 flex items-center justify-between">
-            <h3 className="font-display text-base font-semibold text-navy-800">Owner Statements</h3>
-            <span className="text-xs text-cocoa-400">April 2026</span>
+            <h3 className="font-display text-base font-semibold text-cocoa-800">Owner Statements</h3>
+            <span className="text-xs text-cocoa-500">April 2026</span>
           </div>
           <div className="divide-y divide-sand-100">
             {ownerStatements.map((stmt) => {
@@ -54,10 +54,10 @@ const MonthlyStatements: FC = () => {
                   )}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-navy-800">{stmt.villa}</span>
+                    <span className="text-sm font-semibold text-cocoa-800">{stmt.villa}</span>
                     <span className={cfg.badge}>{stmt.status}</span>
                   </div>
-                  <div className="text-xs text-cocoa-400 mb-1">{stmt.owner}</div>
+                  <div className="text-xs text-cocoa-500 mb-1">{stmt.owner}</div>
                   <div className="text-sm font-bold text-teal-700">
                     IDR {stmt.netPayable.toLocaleString()}
                   </div>
@@ -69,7 +69,7 @@ const MonthlyStatements: FC = () => {
 
         {/* Statement Detail — PDF Preview style */}
         <div className="col-span-12 md:col-span-8 xl:col-span-8">
-          <div className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+          <div className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
             {/* Header */}
             <div className="bg-navy-900 px-8 py-6 bg-batik">
               <div className="flex items-start justify-between">
@@ -96,7 +96,7 @@ const MonthlyStatements: FC = () => {
 
             {/* Income breakdown */}
             <div className="p-8">
-              <h4 className="font-display text-base font-semibold text-navy-800 mb-4">Income Summary</h4>
+              <h4 className="font-display text-base font-semibold text-cocoa-800 mb-4">Income Summary</h4>
               <div className="space-y-3 mb-6">
                 {[
                   { label: 'Direct Booking Income', value: activeStatement.directIncome, type: 'income' },
@@ -105,17 +105,17 @@ const MonthlyStatements: FC = () => {
                 ].map((row) => (
                   <div key={row.label} className={clsx(
                     'flex items-center justify-between py-3',
-                    row.type === 'total' ? 'border-t-2 border-sand-200 font-semibold' : 'border-b border-sand-100'
+                    row.type === 'total' ? 'border-t-2 border-sand-300 font-semibold' : 'border-b border-sand-100'
                   )}>
-                    <span className={clsx('text-sm', row.type === 'total' ? 'text-navy-800 font-semibold' : 'text-cocoa-600')}>{row.label}</span>
-                    <span className={clsx('text-sm font-semibold', row.type === 'total' ? 'text-navy-800 text-base' : 'text-teal-700')}>
+                    <span className={clsx('text-sm', row.type === 'total' ? 'text-cocoa-800 font-semibold' : 'text-cocoa-600')}>{row.label}</span>
+                    <span className={clsx('text-sm font-semibold', row.type === 'total' ? 'text-cocoa-800 text-base' : 'text-teal-700')}>
                       IDR {row.value.toLocaleString()}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <h4 className="font-display text-base font-semibold text-navy-800 mb-4">Deductions</h4>
+              <h4 className="font-display text-base font-semibold text-cocoa-800 mb-4">Deductions</h4>
               <div className="space-y-3 mb-6">
                 {[
                   { label: 'Management Fee (10%)', value: -activeStatement.managementFee },

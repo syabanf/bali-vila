@@ -307,7 +307,7 @@ const OwnerRegistry: FC = () => {
       <div className="grid grid-cols-12 gap-4 h-full">
 
         {/* ── Left Panel: Owner List ─────────────────────────────────────── */}
-        <div className="col-span-12 xl:col-span-4 bg-white rounded-2xl border border-sand-200 shadow-card flex flex-col overflow-hidden">
+        <div className="col-span-12 xl:col-span-4 bg-white rounded-2xl border border-sand-300 shadow-card flex flex-col overflow-hidden">
 
           {/* Search + Add */}
           <div className="p-4 border-b border-sand-100 space-y-3">
@@ -330,7 +330,7 @@ const OwnerRegistry: FC = () => {
                 Add Owner
               </button>
             </div>
-            <p className="text-xs text-cocoa-400">
+            <p className="text-xs text-cocoa-500">
               {filteredOwners.length} owner{filteredOwners.length !== 1 ? 's' : ''}
             </p>
           </div>
@@ -338,7 +338,7 @@ const OwnerRegistry: FC = () => {
           {/* Owner list */}
           <div className="overflow-y-auto flex-1 divide-y divide-sand-100">
             {filteredOwners.length === 0 ? (
-              <div className="p-8 text-center text-sm text-cocoa-400">No owners found.</div>
+              <div className="p-8 text-center text-sm text-cocoa-500">No owners found.</div>
             ) : (
               filteredOwners.map((owner) => {
                 const isSelected = selectedOwner.id === owner.id
@@ -360,9 +360,9 @@ const OwnerRegistry: FC = () => {
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-sm font-semibold text-navy-800 truncate">{owner.name}</span>
+                          <span className="text-sm font-semibold text-cocoa-800 truncate">{owner.name}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-cocoa-400">
+                        <div className="flex items-center gap-1.5 text-xs text-cocoa-500">
                           <span>{nationalityFlag[owner.nationality] ?? '🌐'}</span>
                           <span className="truncate">{owner.contractType}</span>
                         </div>
@@ -371,7 +371,7 @@ const OwnerRegistry: FC = () => {
                       {/* Right: villas + revenue */}
                       <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                         <span className="badge-info">{owner.totalVillas} villa{owner.totalVillas !== 1 ? 's' : ''}</span>
-                        <span className="font-display text-sm font-semibold text-navy-800">
+                        <span className="font-display text-sm font-semibold text-cocoa-800">
                           {formatIDR(owner.totalRevenue)}
                         </span>
                       </div>
@@ -384,7 +384,7 @@ const OwnerRegistry: FC = () => {
         </div>
 
         {/* ── Right Panel: Owner Detail ──────────────────────────────────── */}
-        <div className="col-span-12 xl:col-span-8 bg-white rounded-2xl border border-sand-200 shadow-card flex flex-col overflow-hidden">
+        <div className="col-span-12 xl:col-span-8 bg-white rounded-2xl border border-sand-300 shadow-card flex flex-col overflow-hidden">
 
           {/* Dark header */}
           <div className="bg-navy-900 px-6 py-5 bg-batik flex-shrink-0">
@@ -433,7 +433,7 @@ const OwnerRegistry: FC = () => {
                 <div className="font-display text-2xl font-semibold text-gold-800">
                   {formatIDR(selectedOwner.totalRevenue)}
                 </div>
-                <div className="text-xs text-cocoa-400 mt-0.5">Monthly gross</div>
+                <div className="text-xs text-cocoa-500 mt-0.5">Monthly gross</div>
               </div>
 
               <div className="bg-teal-50 border border-teal-200 rounded-2xl p-4">
@@ -444,7 +444,7 @@ const OwnerRegistry: FC = () => {
                 <div className="font-display text-2xl font-semibold text-teal-800">
                   {selectedOwner.totalVillas}
                 </div>
-                <div className="text-xs text-cocoa-400 mt-0.5">Under management</div>
+                <div className="text-xs text-cocoa-500 mt-0.5">Under management</div>
               </div>
 
               <div className="bg-navy-50 border border-navy-200 rounded-2xl p-4">
@@ -452,47 +452,47 @@ const OwnerRegistry: FC = () => {
                   <FileText className="w-4 h-4 text-navy-700" />
                   <span className="text-xs font-medium text-navy-700">Contract</span>
                 </div>
-                <div className="text-sm font-semibold text-navy-800 leading-snug">
+                <div className="text-sm font-semibold text-cocoa-800 leading-snug">
                   {selectedOwner.contractType}
                 </div>
-                <div className="text-xs text-cocoa-400 mt-0.5">Agreement type</div>
+                <div className="text-xs text-cocoa-500 mt-0.5">Agreement type</div>
               </div>
             </div>
 
             {/* Contact info row */}
-            <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-4">
-              <h4 className="font-display text-sm font-semibold text-navy-800 mb-3">Contact &amp; Banking</h4>
+            <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-4">
+              <h4 className="font-display text-sm font-semibold text-cocoa-800 mb-3">Contact &amp; Banking</h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {/* Email */}
-                <div className="flex items-start gap-3 p-3 bg-sand-50 rounded-xl border border-sand-200">
-                  <Mail className="w-4 h-4 text-cocoa-400 mt-0.5 flex-shrink-0" />
+                <div className="flex items-start gap-3 p-3 bg-sand-50 rounded-xl border border-sand-300">
+                  <Mail className="w-4 h-4 text-cocoa-500 mt-0.5 flex-shrink-0" />
                   <div className="min-w-0">
-                    <div className="text-xs text-cocoa-400 mb-0.5">Email</div>
-                    <div className="text-xs font-medium text-navy-800 break-all">{selectedOwner.email}</div>
+                    <div className="text-xs text-cocoa-500 mb-0.5">Email</div>
+                    <div className="text-xs font-medium text-cocoa-800 break-all">{selectedOwner.email}</div>
                   </div>
                 </div>
 
                 {/* Phone */}
-                <div className="flex items-start gap-3 p-3 bg-sand-50 rounded-xl border border-sand-200">
-                  <Phone className="w-4 h-4 text-cocoa-400 mt-0.5 flex-shrink-0" />
+                <div className="flex items-start gap-3 p-3 bg-sand-50 rounded-xl border border-sand-300">
+                  <Phone className="w-4 h-4 text-cocoa-500 mt-0.5 flex-shrink-0" />
                   <div className="min-w-0">
-                    <div className="text-xs text-cocoa-400 mb-0.5">Phone</div>
-                    <div className="text-xs font-medium text-navy-800">{selectedOwner.phone}</div>
+                    <div className="text-xs text-cocoa-500 mb-0.5">Phone</div>
+                    <div className="text-xs font-medium text-cocoa-800">{selectedOwner.phone}</div>
                   </div>
                 </div>
 
                 {/* Bank */}
-                <div className="flex items-start gap-3 p-3 bg-sand-50 rounded-xl border border-sand-200">
-                  <Building2 className="w-4 h-4 text-cocoa-400 mt-0.5 flex-shrink-0" />
+                <div className="flex items-start gap-3 p-3 bg-sand-50 rounded-xl border border-sand-300">
+                  <Building2 className="w-4 h-4 text-cocoa-500 mt-0.5 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs text-cocoa-400 mb-0.5">{selectedOwner.bankName}</div>
+                    <div className="text-xs text-cocoa-500 mb-0.5">{selectedOwner.bankName}</div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-medium text-navy-800">
+                      <span className="text-xs font-medium text-cocoa-800">
                         {showAccountNo ? selectedOwner.accountNo : selectedOwner.accountNo.replace(/\*/g, '•')}
                       </span>
                       <button
                         onClick={() => setShowAccountNo((p) => !p)}
-                        className="text-cocoa-400 hover:text-navy-700 transition-colors"
+                        className="text-cocoa-500 hover:text-navy-700 transition-colors"
                         aria-label="Toggle account number visibility"
                       >
                         {showAccountNo ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -504,27 +504,27 @@ const OwnerRegistry: FC = () => {
             </div>
 
             {/* Villa portfolio */}
-            <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-4">
+            <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-display text-sm font-semibold text-navy-800">Villa Portfolio</h4>
-                <span className="text-xs text-cocoa-400">{ownedVillas.length} property{ownedVillas.length !== 1 ? 'ies' : 'y'}</span>
+                <h4 className="font-display text-sm font-semibold text-cocoa-800">Villa Portfolio</h4>
+                <span className="text-xs text-cocoa-500">{ownedVillas.length} property{ownedVillas.length !== 1 ? 'ies' : 'y'}</span>
               </div>
 
               {ownedVillas.length === 0 ? (
-                <p className="text-sm text-cocoa-400 text-center py-4">No villas linked to this owner.</p>
+                <p className="text-sm text-cocoa-500 text-center py-4">No villas linked to this owner.</p>
               ) : (
                 <div className="space-y-2">
                   {ownedVillas.map((villa) => (
                     <div
                       key={villa.id}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-sand-50 border border-sand-200 hover:shadow-card-hover transition-all duration-200"
+                      className="flex items-center gap-3 p-3 rounded-xl bg-sand-50 border border-sand-300 hover:shadow-card-hover transition-all duration-200"
                     >
                       <div className="w-8 h-8 rounded-lg bg-navy-800 flex items-center justify-center flex-shrink-0">
                         <Home className="w-4 h-4 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-navy-800">{villa.name}</div>
-                        <div className="flex items-center gap-1.5 text-xs text-cocoa-400">
+                        <div className="text-sm font-semibold text-cocoa-800">{villa.name}</div>
+                        <div className="flex items-center gap-1.5 text-xs text-cocoa-500">
                           <Globe className="w-3 h-3" />
                           {villa.zone}
                         </div>
@@ -533,7 +533,7 @@ const OwnerRegistry: FC = () => {
                         <span className={villaStatusBadge[villa.status] ?? 'badge-info'}>
                           {villa.status}
                         </span>
-                        <span className="font-display text-sm font-semibold text-navy-800">
+                        <span className="font-display text-sm font-semibold text-cocoa-800">
                           ${villa.monthlyRevenue.toLocaleString()}
                         </span>
                       </div>
@@ -544,10 +544,10 @@ const OwnerRegistry: FC = () => {
             </div>
 
             {/* Statement history */}
-            <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-4">
+            <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-display text-sm font-semibold text-navy-800">Statement History</h4>
-                <button className="flex items-center gap-1 text-xs font-medium text-navy-600 hover:text-navy-800 transition-colors">
+                <h4 className="font-display text-sm font-semibold text-cocoa-800">Statement History</h4>
+                <button className="flex items-center gap-1 text-xs font-medium text-navy-600 hover:text-cocoa-800 transition-colors">
                   View all <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -557,14 +557,14 @@ const OwnerRegistry: FC = () => {
                   return (
                     <div
                       key={stmt.id}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-sand-50 border border-sand-200 hover:shadow-card-hover transition-all duration-200"
+                      className="flex items-center gap-3 p-3 rounded-xl bg-sand-50 border border-sand-300 hover:shadow-card-hover transition-all duration-200"
                     >
                       <div className="w-8 h-8 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center flex-shrink-0">
                         <FileText className="w-4 h-4 text-teal-600" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-navy-800">{stmt.villa}</div>
-                        <div className="text-xs text-cocoa-400">{stmt.period}</div>
+                        <div className="text-sm font-semibold text-cocoa-800">{stmt.villa}</div>
+                        <div className="text-xs text-cocoa-500">{stmt.period}</div>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span className={badgeClass}>{stmt.status}</span>
@@ -579,13 +579,13 @@ const OwnerRegistry: FC = () => {
             </div>
 
             {/* Notes card */}
-            <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-4">
+            <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <StickyNote className="w-4 h-4 text-cocoa-400" />
-                  <h4 className="font-display text-sm font-semibold text-navy-800">Notes</h4>
+                  <StickyNote className="w-4 h-4 text-cocoa-500" />
+                  <h4 className="font-display text-sm font-semibold text-cocoa-800">Notes</h4>
                 </div>
-                <button className="text-cocoa-400 hover:text-navy-700 transition-colors" aria-label="Edit notes">
+                <button className="text-cocoa-500 hover:text-navy-700 transition-colors" aria-label="Edit notes">
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
               </div>

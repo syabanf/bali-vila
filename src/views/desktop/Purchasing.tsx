@@ -161,8 +161,8 @@ const Purchasing: FC = () => {
                   <Icon className="w-4 h-4" />
                 </div>
               </div>
-              <div className="font-display text-2xl font-semibold text-navy-800">{item.value}</div>
-              <div className="text-xs text-cocoa-400 mt-1">{item.label}</div>
+              <div className="font-display text-2xl font-semibold text-cocoa-800">{item.value}</div>
+              <div className="text-xs text-cocoa-500 mt-1">{item.label}</div>
             </div>
           )
         })}
@@ -170,9 +170,9 @@ const Purchasing: FC = () => {
 
       <div className="grid grid-cols-12 gap-4">
         {/* Purchase Request Queue */}
-        <div className="col-span-12 xl:col-span-7 bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+        <div className="col-span-12 xl:col-span-7 bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
           <div className="p-5 border-b border-sand-100 flex items-center gap-3">
-            <h3 className="font-display text-lg font-semibold text-navy-800 flex-1">Purchase Request Queue</h3>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800 flex-1">Purchase Request Queue</h3>
             <button className="btn-secondary text-xs py-1.5 px-3"><Filter className="w-3.5 h-3.5" /> Filter</button>
             <button className="btn-primary text-xs py-1.5 px-3" onClick={() => { setForm({ ...emptyForm }); setAddOpen(true) }}>
               <Plus className="w-3.5 h-3.5" /> New Request
@@ -187,7 +187,7 @@ const Purchasing: FC = () => {
                 onClick={() => setActiveTab(tab)}
                 className={clsx(
                   'flex-shrink-0 text-xs px-3 py-1.5 rounded-full font-medium border transition-all duration-200',
-                  activeTab === tab ? 'bg-navy-800 text-white border-navy-800' : 'bg-white text-cocoa-600 border-sand-200 hover:border-navy-300'
+                  activeTab === tab ? 'bg-navy-800 text-white border-navy-800' : 'bg-white text-cocoa-600 border-sand-300 hover:border-navy-300'
                 )}
               >{tab}</button>
             ))}
@@ -203,7 +203,7 @@ const Purchasing: FC = () => {
                     <div className={clsx('w-2 h-2 rounded-full mt-2 flex-shrink-0', urgencyConfig[pr.urgency as keyof typeof urgencyConfig] ?? 'bg-sand-400')} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-semibold text-navy-800">{pr.item}</span>
+                        <span className="text-sm font-semibold text-cocoa-800">{pr.item}</span>
                         <span className="badge-info text-xs">{pr.category}</span>
                       </div>
                       <div className="flex items-center gap-3 text-xs text-cocoa-500">
@@ -216,7 +216,7 @@ const Purchasing: FC = () => {
                     </div>
                     <div className="text-right flex-shrink-0 flex items-start gap-2">
                       <div>
-                        <div className="text-sm font-bold text-navy-800 mb-1">IDR {pr.amount.toLocaleString()}</div>
+                        <div className="text-sm font-bold text-cocoa-800 mb-1">IDR {pr.amount.toLocaleString()}</div>
                         <span className={cfg.badge}>
                           <IconComp className="w-3 h-3 mr-1" />
                           {pr.status}
@@ -261,10 +261,10 @@ const Purchasing: FC = () => {
 
         {/* Supplier Intelligence */}
         <div className="col-span-12 xl:col-span-5 space-y-4">
-          <div className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+          <div className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
             <div className="p-5 border-b border-sand-100">
-              <h3 className="font-display text-lg font-semibold text-navy-800">Supplier Intelligence</h3>
-              <p className="text-xs text-cocoa-400 mt-0.5">Preferred vendors & price trends</p>
+              <h3 className="font-display text-lg font-semibold text-cocoa-800">Supplier Intelligence</h3>
+              <p className="text-xs text-cocoa-500 mt-0.5">Preferred vendors & price trends</p>
             </div>
             <div className="divide-y divide-sand-100">
               {suppliers.map((s) => (
@@ -275,16 +275,16 @@ const Purchasing: FC = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-sm font-semibold text-navy-800">{s.name}</span>
+                        <span className="text-sm font-semibold text-cocoa-800">{s.name}</span>
                         {s.preferred && <span className="badge-success text-xs">Preferred</span>}
                       </div>
-                      <div className="text-xs text-cocoa-400">{s.specialty}</div>
+                      <div className="text-xs text-cocoa-500">{s.specialty}</div>
                       <div className="flex items-center gap-3 mt-2">
                         <span className="flex items-center gap-1 text-xs text-gold-600">
                           <Star className="w-3 h-3 fill-gold-400 text-gold-400" />
                           {s.rating}
                         </span>
-                        <span className="text-xs text-cocoa-400">Response: {s.response}</span>
+                        <span className="text-xs text-cocoa-500">Response: {s.response}</span>
                         <span className="text-xs text-cocoa-500 font-medium">{s.lastPrice}</span>
                       </div>
                     </div>
@@ -292,7 +292,7 @@ const Purchasing: FC = () => {
                       {s.trend === 'up' && <TrendingUp className="w-4 h-4 text-terra-500 ml-auto" />}
                       {s.trend === 'down' && <TrendingDown className="w-4 h-4 text-teal-500 ml-auto" />}
                       {s.trend === 'stable' && <Minus className="w-4 h-4 text-cocoa-300 ml-auto" />}
-                      <span className="text-xs text-cocoa-400 mt-1 block">
+                      <span className="text-xs text-cocoa-500 mt-1 block">
                         {s.trend === 'up' ? '↑ Prices up' : s.trend === 'down' ? '↓ Prices down' : '— Stable'}
                       </span>
                     </div>

@@ -55,7 +55,7 @@ const SOPLibrary: FC = () => {
 
           <div className="space-y-3">
             {sopSteps.map((step, i) => (
-              <div key={i} className="flex gap-3 bg-white rounded-2xl p-4 border border-sand-200 shadow-card">
+              <div key={i} className="flex gap-3 bg-white rounded-2xl p-4 border border-sand-300 shadow-card">
                 <div className="w-7 h-7 rounded-full bg-navy-100 flex items-center justify-center flex-shrink-0">
                   <span className="text-xs font-bold text-navy-700">{i + 1}</span>
                 </div>
@@ -115,22 +115,22 @@ const SOPLibrary: FC = () => {
 
       {/* Recently viewed */}
       <div className="px-4 mt-5">
-        <h3 className="font-semibold text-sm text-navy-800 mb-2">Recently Viewed</h3>
+        <h3 className="font-semibold text-sm text-cocoa-800 mb-2">Recently Viewed</h3>
         <div className="space-y-2">
           {recentSOPs.map((sop) => (
             <button
               key={sop.id}
               onClick={() => setViewingSOP(sop.id)}
-              className="w-full flex items-center gap-3 bg-white rounded-2xl p-3.5 border border-sand-200 shadow-card text-left hover:shadow-card-hover transition-all duration-200"
+              className="w-full flex items-center gap-3 bg-white rounded-2xl p-3.5 border border-sand-300 shadow-card text-left hover:shadow-card-hover transition-all duration-200"
             >
               <div className="w-9 h-9 rounded-xl bg-navy-50 flex items-center justify-center flex-shrink-0">
                 <BookOpen className="w-4 h-4 text-navy-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-navy-800 truncate">{sop.title}</div>
-                <div className="text-xs text-cocoa-400">{sop.category} · {sop.lastViewed}</div>
+                <div className="text-sm font-semibold text-cocoa-800 truncate">{sop.title}</div>
+                <div className="text-xs text-cocoa-500">{sop.category} · {sop.lastViewed}</div>
               </div>
-              <ChevronRight className="w-4 h-4 text-cocoa-400 flex-shrink-0" />
+              <ChevronRight className="w-4 h-4 text-cocoa-500 flex-shrink-0" />
             </button>
           ))}
         </div>
@@ -138,19 +138,19 @@ const SOPLibrary: FC = () => {
 
       {/* Categories */}
       <div className="px-4 mt-5">
-        <h3 className="font-semibold text-sm text-navy-800 mb-2">All Categories</h3>
+        <h3 className="font-semibold text-sm text-cocoa-800 mb-2">All Categories</h3>
         <div className="grid grid-cols-2 gap-3">
           {sopCategories.map((cat) => (
             <button
               key={cat.id}
               className={clsx(
                 'bg-white rounded-2xl p-4 border shadow-card text-left hover:shadow-card-hover transition-all duration-200 active:scale-98',
-                cat.color === 'terra' ? 'border-terra-200' : cat.color === 'gold' ? 'border-gold-200' : 'border-sand-200'
+                cat.color === 'terra' ? 'border-terra-200' : cat.color === 'gold' ? 'border-gold-200' : 'border-sand-300'
               )}
             >
               {(() => { const Icon = sopIconMap[cat.icon] ?? BookOpen; return <Icon className="w-5 h-5 text-navy-600 mb-2" /> })()}
-              <div className="text-sm font-semibold text-navy-800">{cat.name}</div>
-              <div className="text-xs text-cocoa-400 mt-0.5">{cat.count} procedures</div>
+              <div className="text-sm font-semibold text-cocoa-800">{cat.name}</div>
+              <div className="text-xs text-cocoa-500 mt-0.5">{cat.count} procedures</div>
             </button>
           ))}
         </div>

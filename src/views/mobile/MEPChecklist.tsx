@@ -120,15 +120,15 @@ const MEPChecklist: FC = () => {
           const catIssues = cat.items.filter(i => statuses[i.label] === 'Issue' || statuses[i.label] === 'Warning').length
 
           return (
-            <div key={cat.title} className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+            <div key={cat.title} className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
               <button
                 className="w-full flex items-center gap-3 p-4"
                 onClick={() => toggleExpand(cat.title)}
               >
                 {(() => { const Icon = cat.icon; return <Icon className="w-5 h-5 text-navy-600 flex-shrink-0" /> })()}
                 <div className="flex-1 text-left">
-                  <div className="font-semibold text-sm text-navy-800">{cat.title}</div>
-                  <div className="text-xs text-cocoa-400">{catDone}/{cat.items.length} checked</div>
+                  <div className="font-semibold text-sm text-cocoa-800">{cat.title}</div>
+                  <div className="text-xs text-cocoa-500">{catDone}/{cat.items.length} checked</div>
                 </div>
                 {catIssues > 0 && (
                   <span className="badge-warning text-xs"><AlertTriangle className="w-3 h-3 mr-1" />{catIssues}</span>
@@ -136,7 +136,7 @@ const MEPChecklist: FC = () => {
                 {catIssues === 0 && catDone === cat.items.length && (
                   <CheckCircle className="w-5 h-5 text-teal-500" />
                 )}
-                <ChevronDown className={clsx('w-4 h-4 text-cocoa-400 transition-transform', isExpanded ? 'rotate-180' : '')} />
+                <ChevronDown className={clsx('w-4 h-4 text-cocoa-500 transition-transform', isExpanded ? 'rotate-180' : '')} />
               </button>
 
               {isExpanded && (
@@ -159,7 +159,7 @@ const MEPChecklist: FC = () => {
                                   ? opt === 'OK' ? 'bg-teal-500 text-white border-teal-500'
                                     : opt === 'Warning' ? 'bg-gold-400 text-navy-900 border-gold-400'
                                     : 'bg-terra-500 text-white border-terra-500'
-                                  : 'bg-sand-50 text-cocoa-500 border-sand-200 hover:border-navy-200'
+                                  : 'bg-sand-50 text-cocoa-500 border-sand-300 hover:border-navy-200'
                               )}
                             >{opt}</button>
                           ))}

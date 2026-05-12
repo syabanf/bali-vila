@@ -32,11 +32,11 @@ const ExecutiveDashboard: FC = () => {
       {/* Main Grid */}
       <div className="grid grid-cols-12 gap-4">
         {/* Revenue Chart */}
-        <div className="col-span-12 xl:col-span-8 bg-white rounded-2xl p-4 md:p-6 border border-sand-200 shadow-card">
+        <div className="col-span-12 xl:col-span-8 bg-white rounded-2xl p-4 md:p-6 border border-sand-300 shadow-card">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="font-display text-lg font-semibold text-navy-800">Revenue Intelligence</h3>
-              <p className="text-xs text-cocoa-400 mt-0.5">Direct vs OTA contribution — 12 months</p>
+              <h3 className="font-display text-lg font-semibold text-cocoa-800">Revenue Intelligence</h3>
+              <p className="text-xs text-cocoa-500 mt-0.5">Direct vs OTA contribution — 12 months</p>
             </div>
             <div className="flex items-center gap-4 text-xs">
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-navy-700 inline-block" />Direct</span>
@@ -56,8 +56,8 @@ const ExecutiveDashboard: FC = () => {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}M`} />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}M`} />
               <Tooltip
                 contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
                 formatter={(v: number) => [`IDR ${v}M`, '']}
@@ -69,9 +69,9 @@ const ExecutiveDashboard: FC = () => {
         </div>
 
         {/* Occupancy Donut */}
-        <div className="col-span-12 md:col-span-6 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-200 shadow-card">
-          <h3 className="font-display text-lg font-semibold text-navy-800 mb-1">Villa Status</h3>
-          <p className="text-xs text-cocoa-400 mb-4">Current distribution</p>
+        <div className="col-span-12 md:col-span-6 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-300 shadow-card">
+          <h3 className="font-display text-lg font-semibold text-cocoa-800 mb-1">Villa Status</h3>
+          <p className="text-xs text-cocoa-500 mb-4">Current distribution</p>
           <div className="flex items-center justify-between gap-4">
             <ResponsiveContainer width={130} height={130}>
               <PieChart>
@@ -90,7 +90,7 @@ const ExecutiveDashboard: FC = () => {
                     <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: d.color }} />
                     {d.name}
                   </span>
-                  <span className="text-sm font-semibold text-navy-800">{d.value}%</span>
+                  <span className="text-sm font-semibold text-cocoa-800">{d.value}%</span>
                 </div>
               ))}
             </div>
@@ -143,8 +143,8 @@ const ExecutiveDashboard: FC = () => {
         </div>
 
         {/* Ops Snapshot */}
-        <div className="col-span-12 md:col-span-6 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-200 shadow-card">
-          <h3 className="font-display text-lg font-semibold text-navy-800 mb-4">Operations Snapshot</h3>
+        <div className="col-span-12 md:col-span-6 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-300 shadow-card">
+          <h3 className="font-display text-lg font-semibold text-cocoa-800 mb-4">Operations Snapshot</h3>
           <div className="space-y-3">
             {[
               { label: 'Ready', value: 168, color: 'bg-teal-400', pct: 68 },
@@ -156,7 +156,7 @@ const ExecutiveDashboard: FC = () => {
               <div key={row.label}>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-sm text-cocoa-600">{row.label}</span>
-                  <span className="text-sm font-semibold text-navy-800">{row.value} villas</span>
+                  <span className="text-sm font-semibold text-cocoa-800">{row.value} villas</span>
                 </div>
                 <div className="h-1.5 bg-sand-100 rounded-full overflow-hidden">
                   <div className={`h-full rounded-full ${row.color}`} style={{ width: `${row.pct}%` }} />
@@ -167,16 +167,16 @@ const ExecutiveDashboard: FC = () => {
         </div>
 
         {/* Team Map Placeholder */}
-        <div className="col-span-12 md:col-span-6 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-200 shadow-card">
+        <div className="col-span-12 md:col-span-6 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-300 shadow-card">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-display text-lg font-semibold text-navy-800">Team Activity Map</h3>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800">Team Activity Map</h3>
             <span className="badge-success">
               <span className="w-1.5 h-1.5 rounded-full bg-teal-400 mr-1.5 animate-pulse-slow" />
               Live
             </span>
           </div>
           {/* Stylized map grid */}
-          <div className="relative h-44 bg-gradient-to-br from-teal-50 to-navy-50 rounded-xl border border-sand-200 overflow-hidden">
+          <div className="relative h-44 bg-gradient-to-br from-teal-50 to-navy-50 rounded-xl border border-sand-300 overflow-hidden">
             <div className="absolute inset-0 opacity-20"
               style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #0F2040 1px, transparent 0)', backgroundSize: '20px 20px' }} />
             {staffActivity.map((staff, i) => (
@@ -207,18 +207,18 @@ const ExecutiveDashboard: FC = () => {
         </div>
 
         {/* Management Alerts */}
-        <div className="col-span-12 xl:col-span-8 bg-white rounded-2xl p-6 border border-sand-200 shadow-card">
+        <div className="col-span-12 xl:col-span-8 bg-white rounded-2xl p-6 border border-sand-300 shadow-card">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-display text-lg font-semibold text-navy-800">Management Alert Center</h3>
-            <button className="text-xs text-navy-600 hover:text-navy-800 flex items-center gap-1 font-medium">View all <ArrowUpRight className="w-3 h-3" /></button>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800">Management Alert Center</h3>
+            <button className="text-xs text-navy-600 hover:text-cocoa-800 flex items-center gap-1 font-medium">View all <ArrowUpRight className="w-3 h-3" /></button>
           </div>
           <AlertBanner alerts={alerts} />
         </div>
 
         {/* Monthly Revenue Bar */}
-        <div className="col-span-12 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-200 shadow-card">
-          <h3 className="font-display text-lg font-semibold text-navy-800 mb-1">Channel Split</h3>
-          <p className="text-xs text-cocoa-400 mb-4">Booking source this month</p>
+        <div className="col-span-12 xl:col-span-4 bg-white rounded-2xl p-6 border border-sand-300 shadow-card">
+          <h3 className="font-display text-lg font-semibold text-cocoa-800 mb-1">Channel Split</h3>
+          <p className="text-xs text-cocoa-500 mb-4">Booking source this month</p>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={[
               { channel: 'Direct', value: 58, color: '#0F4C81' },
@@ -228,7 +228,7 @@ const ExecutiveDashboard: FC = () => {
               { channel: 'Other', value: 3, color: '#A0B5C4' },
             ]} layout="vertical" margin={{ left: 10, right: 20, top: 0, bottom: 0 }}>
               <XAxis type="number" hide />
-              <YAxis type="category" dataKey="channel" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} width={55} />
+              <YAxis type="category" dataKey="channel" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} width={55} />
               <Tooltip contentStyle={{ borderRadius: '10px', fontSize: 12, border: '1px solid #D9E2EC' }} formatter={(v) => [`${v}%`, '']} />
               <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                 {[
@@ -247,11 +247,11 @@ const ExecutiveDashboard: FC = () => {
       </div>
 
       {/* Cost & Inventory Leakage */}
-      <div className="bg-white rounded-2xl p-6 border border-sand-200 shadow-card">
+      <div className="bg-white rounded-2xl p-6 border border-sand-300 shadow-card">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-display text-lg font-semibold text-navy-800">Cost & Inventory Leakage</h3>
-            <p className="text-xs text-cocoa-400 mt-0.5">May 2026 — variance from standard stock</p>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800">Cost & Inventory Leakage</h3>
+            <p className="text-xs text-cocoa-500 mt-0.5">May 2026 — variance from standard stock</p>
           </div>
           <button className="btn-secondary text-xs py-1.5">Full Report <ChevronRight className="w-3 h-3" /></button>
         </div>

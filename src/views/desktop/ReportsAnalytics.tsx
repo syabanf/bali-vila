@@ -75,13 +75,13 @@ function RevenueTab() {
       {/* KPI row */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         {kpis.map((k) => (
-          <div key={k.label} className="bg-white rounded-2xl border border-sand-200 shadow-card p-5 flex items-start gap-3">
+          <div key={k.label} className="bg-white rounded-2xl border border-sand-300 shadow-card p-5 flex items-start gap-3">
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${k.accent}`}>
               {k.icon}
             </div>
             <div>
-              <div className="font-display text-2xl font-semibold text-navy-800 leading-tight">{k.value}</div>
-              <div className="text-xs text-cocoa-400 mt-0.5">{k.label}</div>
+              <div className="font-display text-2xl font-semibold text-cocoa-800 leading-tight">{k.value}</div>
+              <div className="text-xs text-cocoa-500 mt-0.5">{k.label}</div>
               <div className="text-xs text-cocoa-300">{k.sub}</div>
             </div>
           </div>
@@ -89,11 +89,11 @@ function RevenueTab() {
       </div>
 
       {/* Area Chart */}
-      <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-6">
+      <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-6">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-display text-lg font-semibold text-navy-800">Revenue by Source</h3>
-            <p className="text-xs text-cocoa-400 mt-0.5">Direct vs OTA — 12 months</p>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800">Revenue by Source</h3>
+            <p className="text-xs text-cocoa-500 mt-0.5">Direct vs OTA — 12 months</p>
           </div>
           <div className="flex items-center gap-4 text-xs text-cocoa-500">
             <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-teal-400 inline-block" />Direct</span>
@@ -113,8 +113,8 @@ function RevenueTab() {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}M`} />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}M`} />
             <Tooltip
               contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
               formatter={(v: number) => [`IDR ${v}M`, '']}
@@ -126,10 +126,10 @@ function RevenueTab() {
       </div>
 
       {/* Villa Table */}
-      <div className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+      <div className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
         <div className="px-6 py-4 border-b border-sand-100 flex items-center justify-between">
-          <h3 className="font-display text-lg font-semibold text-navy-800">Revenue by Villa</h3>
-          <span className="text-xs text-cocoa-400">{revenueByVilla.length} villas · click column to sort</span>
+          <h3 className="font-display text-lg font-semibold text-cocoa-800">Revenue by Villa</h3>
+          <span className="text-xs text-cocoa-500">{revenueByVilla.length} villas · click column to sort</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -157,7 +157,7 @@ function RevenueTab() {
                 return (
                   <tr key={row.villa} className={`hover:bg-sand-50 transition-colors ${i === 0 ? 'font-semibold' : ''}`}>
                     <td className="table-cell">
-                      <span className={`text-navy-800 ${i === 0 ? 'font-bold' : ''}`}>{row.villa}</span>
+                      <span className={`text-cocoa-800 ${i === 0 ? 'font-bold' : ''}`}>{row.villa}</span>
                     </td>
                     <td className="table-cell text-right font-display text-navy-700">
                       IDR {(row.revenue / 1000).toFixed(0)}K
@@ -218,20 +218,20 @@ function OccupancyTab() {
       {/* KPI row */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         {kpis.map(k => (
-          <div key={k.label} className="bg-white rounded-2xl border border-sand-200 shadow-card p-5">
+          <div key={k.label} className="bg-white rounded-2xl border border-sand-300 shadow-card p-5">
             <div className={`text-xs font-semibold px-2 py-0.5 rounded-full inline-block mb-2 ${k.accent}`}>{k.label}</div>
-            <div className="font-display text-3xl font-semibold text-navy-800">{k.value}</div>
-            <div className="text-xs text-cocoa-400 mt-1">{k.sub}</div>
+            <div className="font-display text-3xl font-semibold text-cocoa-800">{k.value}</div>
+            <div className="text-xs text-cocoa-500 mt-1">{k.sub}</div>
           </div>
         ))}
       </div>
 
       {/* Trend chart */}
-      <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-6">
+      <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-6">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-display text-lg font-semibold text-navy-800">Occupancy Trend</h3>
-            <p className="text-xs text-cocoa-400 mt-0.5">Rate vs target — 8 months</p>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800">Occupancy Trend</h3>
+            <p className="text-xs text-cocoa-500 mt-0.5">Rate vs target — 8 months</p>
           </div>
           <div className="flex items-center gap-4 text-xs text-cocoa-500">
             <span className="flex items-center gap-1.5"><span className="w-2.5 h-0.5 bg-navy-700 inline-block" />Actual</span>
@@ -241,13 +241,13 @@ function OccupancyTab() {
         <ResponsiveContainer width="100%" height={240}>
           <LineChart data={occupancyTrend} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} domain={[50, 90]} tickFormatter={v => `${v}%`} />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} domain={[50, 90]} tickFormatter={v => `${v}%`} />
             <Tooltip
               contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
               formatter={(v: number) => [`${v}%`, '']}
             />
-            <ReferenceLine y={70} stroke="#D9E2EC" strokeDasharray="4 4" label={{ value: '70% threshold', position: 'insideTopRight', fontSize: 10, fill: '#7A8B95' }} />
+            <ReferenceLine y={70} stroke="#D9E2EC" strokeDasharray="4 4" label={{ value: '70% threshold', position: 'insideTopRight', fontSize: 10, fill: '#52616B' }} />
             <Line type="monotone" dataKey="rate" name="Actual" stroke="#0A2E4E" strokeWidth={2.5} dot={{ fill: '#0A2E4E', r: 4 }} />
             <Line type="monotone" dataKey="target" name="Target" stroke="#C9A84C" strokeWidth={2} strokeDasharray="5 4" dot={false} />
           </LineChart>
@@ -255,9 +255,9 @@ function OccupancyTab() {
       </div>
 
       {/* Per-villa bar chart */}
-      <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-6">
+      <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-6">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="font-display text-lg font-semibold text-navy-800">Occupancy by Villa</h3>
+          <h3 className="font-display text-lg font-semibold text-cocoa-800">Occupancy by Villa</h3>
           <div className="flex items-center gap-3 text-xs text-cocoa-500">
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-teal-400 inline-block" />≥70%</span>
             <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-gold-400 inline-block" />50–69%</span>
@@ -267,8 +267,8 @@ function OccupancyTab() {
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={villaBars} layout="vertical" margin={{ left: 10, right: 30, top: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" horizontal={false} />
-            <XAxis type="number" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} domain={[0, 100]} tickFormatter={v => `${v}%`} />
-            <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} width={80} />
+            <XAxis type="number" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} domain={[0, 100]} tickFormatter={v => `${v}%`} />
+            <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} width={80} />
             <Tooltip
               contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12 }}
               formatter={(v: number) => [`${v}%`, 'Occupancy']}
@@ -336,20 +336,20 @@ function MaintenanceTab() {
       {/* KPI row */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         {kpis.map(k => (
-          <div key={k.label} className="bg-white rounded-2xl border border-sand-200 shadow-card p-5">
+          <div key={k.label} className="bg-white rounded-2xl border border-sand-300 shadow-card p-5">
             <div className={`text-xs font-semibold px-2 py-0.5 rounded-full inline-block mb-2 ${k.accent}`}>{k.label}</div>
-            <div className="font-display text-3xl font-semibold text-navy-800">{k.value}</div>
-            <div className="text-xs text-cocoa-400 mt-1">{k.sub}</div>
+            <div className="font-display text-3xl font-semibold text-cocoa-800">{k.value}</div>
+            <div className="text-xs text-cocoa-500 mt-1">{k.sub}</div>
           </div>
         ))}
       </div>
 
       {/* Stacked bar chart */}
-      <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-6">
+      <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-6">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-display text-lg font-semibold text-navy-800">Cost by Month & Category</h3>
-            <p className="text-xs text-cocoa-400 mt-0.5">Stacked by maintenance type</p>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800">Cost by Month & Category</h3>
+            <p className="text-xs text-cocoa-500 mt-0.5">Stacked by maintenance type</p>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-xs text-cocoa-500">
             {categories.map(cat => (
@@ -363,8 +363,8 @@ function MaintenanceTab() {
         <ResponsiveContainer width="100%" height={260}>
           <BarChart data={maintenanceCostData} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}K`} />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}K`} />
             <Tooltip
               contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
               formatter={(v: number, name: string) => [`IDR ${v.toLocaleString()}`, MAINT_LABELS[name] ?? name]}
@@ -377,9 +377,9 @@ function MaintenanceTab() {
       </div>
 
       {/* Category breakdown table */}
-      <div className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+      <div className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
         <div className="px-6 py-4 border-b border-sand-100">
-          <h3 className="font-display text-lg font-semibold text-navy-800">Cost Breakdown by Category</h3>
+          <h3 className="font-display text-lg font-semibold text-cocoa-800">Cost Breakdown by Category</h3>
         </div>
         <table className="w-full">
           <thead>
@@ -396,7 +396,7 @@ function MaintenanceTab() {
                 <td className="table-cell">
                   <span className="flex items-center gap-2.5">
                     <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: MAINT_COLORS[row.cat] }} />
-                    <span className="text-navy-800 font-medium">{MAINT_LABELS[row.cat]}</span>
+                    <span className="text-cocoa-800 font-medium">{MAINT_LABELS[row.cat]}</span>
                   </span>
                 </td>
                 <td className="table-cell text-right font-display text-navy-700">
@@ -420,7 +420,7 @@ function MaintenanceTab() {
                       <TrendingDown className="w-3.5 h-3.5" /> Lower
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-cocoa-400 text-xs">
+                    <span className="inline-flex items-center gap-1 text-cocoa-500 text-xs">
                       <Minus className="w-3.5 h-3.5" /> Flat
                     </span>
                   )}
@@ -478,11 +478,11 @@ function StaffChannelTab() {
     <div className="space-y-5">
       <div className="grid grid-cols-12 gap-5">
         {/* Staff Table */}
-        <div className="col-span-12 xl:col-span-6 bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+        <div className="col-span-12 xl:col-span-6 bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
           <div className="px-6 py-4 border-b border-sand-100 flex items-center justify-between">
             <div>
-              <h3 className="font-display text-lg font-semibold text-navy-800">Staff Performance</h3>
-              <p className="text-xs text-cocoa-400 mt-0.5">Click column header to sort</p>
+              <h3 className="font-display text-lg font-semibold text-cocoa-800">Staff Performance</h3>
+              <p className="text-xs text-cocoa-500 mt-0.5">Click column header to sort</p>
             </div>
             <Users className="w-4 h-4 text-cocoa-300" />
           </div>
@@ -509,8 +509,8 @@ function StaffChannelTab() {
                 {sortedStaff.map(s => (
                   <tr key={s.name} className="hover:bg-sand-50 transition-colors">
                     <td className="table-cell">
-                      <div className="font-medium text-navy-800">{s.name}</div>
-                      <div className="text-xs text-cocoa-400">{s.role}</div>
+                      <div className="font-medium text-cocoa-800">{s.name}</div>
+                      <div className="text-xs text-cocoa-500">{s.role}</div>
                     </td>
                     <td className="table-cell text-right text-cocoa-600">{s.taskScore}%</td>
                     <td className="table-cell text-right text-cocoa-600">{s.attendanceScore}%</td>
@@ -528,9 +528,9 @@ function StaffChannelTab() {
         {/* Channel Performance */}
         <div className="col-span-12 xl:col-span-6 space-y-4">
           {/* Bar chart */}
-          <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-6">
+          <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-display text-lg font-semibold text-navy-800">Channel Performance</h3>
+              <h3 className="font-display text-lg font-semibold text-cocoa-800">Channel Performance</h3>
               <div className="flex items-center gap-3 text-xs text-cocoa-500">
                 <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-navy-700 inline-block" />Bookings</span>
                 <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-gold-400 inline-block" />Revenue (K)</span>
@@ -539,8 +539,8 @@ function StaffChannelTab() {
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={channelChartData} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11, fill: '#52616B' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
                 />
@@ -551,7 +551,7 @@ function StaffChannelTab() {
           </div>
 
           {/* Channel table */}
-          <div className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+          <div className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
             <table className="w-full">
               <thead>
                 <tr className="bg-sand-50">
@@ -564,7 +564,7 @@ function StaffChannelTab() {
               <tbody>
                 {channelPerformance.map(c => (
                   <tr key={c.channel} className="hover:bg-sand-50 transition-colors">
-                    <td className="table-cell font-medium text-navy-800">{c.channel}</td>
+                    <td className="table-cell font-medium text-cocoa-800">{c.channel}</td>
                     <td className="table-cell text-right">
                       <span className={c.convRate >= 40 ? 'text-teal-600 font-semibold' : c.convRate >= 25 ? 'text-cocoa-600' : 'text-terra-600'}>
                         {c.convRate}%
@@ -609,8 +609,8 @@ const ReportsAnalytics: FC = () => {
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-navy-800">Reports & Analytics</h1>
-          <p className="text-sm text-cocoa-400 mt-0.5">Performance insights across revenue, occupancy, operations and team</p>
+          <h1 className="font-display text-3xl font-semibold text-cocoa-800">Reports & Analytics</h1>
+          <p className="text-sm text-cocoa-500 mt-0.5">Performance insights across revenue, occupancy, operations and team</p>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           <button className="btn-secondary">
@@ -627,14 +627,14 @@ const ReportsAnalytics: FC = () => {
       {/* Tab bar + period selector */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         {/* Tabs */}
-        <div className="flex items-center gap-1 bg-sand-100 rounded-xl p-1 border border-sand-200">
+        <div className="flex items-center gap-1 bg-sand-100 rounded-xl p-1 border border-sand-300">
           {tabs.map(t => (
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id)}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 activeTab === t.id
-                  ? 'bg-white text-navy-800 shadow-sm border border-sand-200'
+                  ? 'bg-white text-cocoa-800 shadow-sm border border-sand-300'
                   : 'text-cocoa-500 hover:text-navy-700'
               }`}
             >
@@ -645,7 +645,7 @@ const ReportsAnalytics: FC = () => {
         </div>
 
         {/* Period selector */}
-        <div className="flex items-center gap-1 bg-sand-100 rounded-xl p-1 border border-sand-200">
+        <div className="flex items-center gap-1 bg-sand-100 rounded-xl p-1 border border-sand-300">
           {periods.map(p => (
             <button
               key={p.id}

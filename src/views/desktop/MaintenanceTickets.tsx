@@ -213,14 +213,14 @@ const TicketCard: FC<{ ticket: Ticket; selected: boolean; onClick: () => void }>
       onClick={onClick}
       className={clsx(
         'w-full text-left bg-white rounded-2xl border p-3.5 shadow-card hover:shadow-card-hover transition-all duration-200 space-y-2.5',
-        selected ? 'border-navy-300 ring-2 ring-navy-200' : 'border-sand-200',
+        selected ? 'border-navy-300 ring-2 ring-navy-200' : 'border-sand-300',
       )}
     >
       {/* Top row: priority dot + ID */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
           <span className={clsx('w-2 h-2 rounded-full flex-shrink-0', pc.dot)} />
-          <span className="text-xs font-mono text-cocoa-400">{ticket.id}</span>
+          <span className="text-xs font-mono text-cocoa-500">{ticket.id}</span>
         </div>
         <span className={clsx('text-xs font-medium px-2 py-0.5 rounded-full border', pc.badge)}>
           {pc.label}
@@ -228,7 +228,7 @@ const TicketCard: FC<{ ticket: Ticket; selected: boolean; onClick: () => void }>
       </div>
 
       {/* Issue */}
-      <p className="text-sm font-semibold text-navy-800 leading-snug line-clamp-2">{ticket.issue}</p>
+      <p className="text-sm font-semibold text-cocoa-800 leading-snug line-clamp-2">{ticket.issue}</p>
 
       {/* Villa + Category */}
       <div className="flex items-center gap-2 flex-wrap">
@@ -238,7 +238,7 @@ const TicketCard: FC<{ ticket: Ticket; selected: boolean; onClick: () => void }>
 
       {/* Assignee */}
       <div className="flex items-center gap-1.5">
-        <User className="w-3 h-3 text-cocoa-400" />
+        <User className="w-3 h-3 text-cocoa-500" />
         {ticket.assignedTo ? (
           <span className="text-xs text-cocoa-600 font-medium">{ticket.assignedTo}</span>
         ) : (
@@ -250,7 +250,7 @@ const TicketCard: FC<{ ticket: Ticket; selected: boolean; onClick: () => void }>
 
       {/* SLA + Cost */}
       <div className="flex items-center justify-between gap-2 pt-0.5 border-t border-sand-100">
-        <div className={clsx('flex items-center gap-1 text-xs', overdue ? 'text-terra-600' : 'text-cocoa-400')}>
+        <div className={clsx('flex items-center gap-1 text-xs', overdue ? 'text-terra-600' : 'text-cocoa-500')}>
           <Clock className="w-3 h-3" />
           <span>{ticket.slaDeadline}</span>
         </div>
@@ -278,7 +278,7 @@ const TicketDetail: FC<{
   const assignedVendor = vendors.find((v) => v.id === ticket.vendorId)
 
   return (
-    <div className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+    <div className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
       {/* Header */}
       <div className="bg-navy-900 px-5 py-4 bg-batik">
         <div className="flex items-start justify-between gap-3">
@@ -328,14 +328,14 @@ const TicketDetail: FC<{
 
         {/* Meta info */}
         <div className="grid grid-cols-2 gap-2">
-          <div className="bg-sand-50 rounded-xl p-3 border border-sand-200">
-            <div className="text-xs text-cocoa-400 mb-0.5">Created by</div>
-            <div className="text-xs font-semibold text-navy-800">{ticket.createdBy}</div>
-            <div className="text-xs text-cocoa-400 mt-0.5">{ticket.createdAt}</div>
+          <div className="bg-sand-50 rounded-xl p-3 border border-sand-300">
+            <div className="text-xs text-cocoa-500 mb-0.5">Created by</div>
+            <div className="text-xs font-semibold text-cocoa-800">{ticket.createdBy}</div>
+            <div className="text-xs text-cocoa-500 mt-0.5">{ticket.createdAt}</div>
           </div>
-          <div className="bg-sand-50 rounded-xl p-3 border border-sand-200">
-            <div className="text-xs text-cocoa-400 mb-0.5">Est. Time</div>
-            <div className="text-xs font-semibold text-navy-800">{ticket.estimatedTime}</div>
+          <div className="bg-sand-50 rounded-xl p-3 border border-sand-300">
+            <div className="text-xs text-cocoa-500 mb-0.5">Est. Time</div>
+            <div className="text-xs font-semibold text-cocoa-800">{ticket.estimatedTime}</div>
           </div>
         </div>
 
@@ -344,12 +344,12 @@ const TicketDetail: FC<{
           'flex items-center gap-3 rounded-xl p-3 border',
           overdue
             ? 'bg-terra-50 border-terra-200'
-            : 'bg-sand-50 border-sand-200',
+            : 'bg-sand-50 border-sand-300',
         )}>
-          <Clock className={clsx('w-4 h-4 flex-shrink-0', overdue ? 'text-terra-500' : 'text-cocoa-400')} />
+          <Clock className={clsx('w-4 h-4 flex-shrink-0', overdue ? 'text-terra-500' : 'text-cocoa-500')} />
           <div>
-            <div className="text-xs text-cocoa-400">SLA Deadline</div>
-            <div className={clsx('text-sm font-semibold', overdue ? 'text-terra-700' : 'text-navy-800')}>
+            <div className="text-xs text-cocoa-500">SLA Deadline</div>
+            <div className={clsx('text-sm font-semibold', overdue ? 'text-terra-700' : 'text-cocoa-800')}>
               {ticket.slaDeadline}
             </div>
           </div>
@@ -363,23 +363,23 @@ const TicketDetail: FC<{
 
         {/* Assignee / Vendor */}
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-cocoa-400 mb-2">Assigned Vendor</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-cocoa-500 mb-2">Assigned Vendor</h4>
           {assignedVendor ? (
-            <div className="flex items-center gap-3 bg-sand-50 border border-sand-200 rounded-xl p-3">
+            <div className="flex items-center gap-3 bg-sand-50 border border-sand-300 rounded-xl p-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-navy-100 to-teal-100 flex items-center justify-center flex-shrink-0">
                 <span className="font-display text-xs font-bold text-navy-700">
                   {assignedVendor.name.split(' ').slice(-1)[0].slice(0, 2).toUpperCase()}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-navy-800">{assignedVendor.name}</div>
-                <div className="text-xs text-cocoa-400">{assignedVendor.specialty} &middot; {assignedVendor.area}</div>
+                <div className="text-sm font-semibold text-cocoa-800">{assignedVendor.name}</div>
+                <div className="text-xs text-cocoa-500">{assignedVendor.specialty} &middot; {assignedVendor.area}</div>
               </div>
               <span className={clsx(
                 'text-xs font-medium px-2 py-0.5 rounded-full border',
                 assignedVendor.available
                   ? 'bg-teal-50 text-teal-700 border-teal-200'
-                  : 'bg-sand-100 text-cocoa-500 border-sand-200',
+                  : 'bg-sand-100 text-cocoa-500 border-sand-300',
               )}>
                 {assignedVendor.available ? 'Available' : 'Busy'}
               </span>
@@ -400,14 +400,14 @@ const TicketDetail: FC<{
 
         {/* Cost Tracking */}
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-cocoa-400 mb-2">Cost Tracking</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-cocoa-500 mb-2">Cost Tracking</h4>
           <div className="grid grid-cols-2 gap-2">
-            <div className="bg-sand-50 rounded-xl p-3 border border-sand-200">
-              <div className="text-xs text-cocoa-400 mb-1">Estimated</div>
-              <div className="text-sm font-semibold text-navy-800">{formatIDR(ticket.estimatedCost)}</div>
+            <div className="bg-sand-50 rounded-xl p-3 border border-sand-300">
+              <div className="text-xs text-cocoa-500 mb-1">Estimated</div>
+              <div className="text-sm font-semibold text-cocoa-800">{formatIDR(ticket.estimatedCost)}</div>
             </div>
-            <div className="bg-sand-50 rounded-xl p-3 border border-sand-200">
-              <div className="text-xs text-cocoa-400 mb-1">Actual</div>
+            <div className="bg-sand-50 rounded-xl p-3 border border-sand-300">
+              <div className="text-xs text-cocoa-500 mb-1">Actual</div>
               {ticket.status === 'resolved' ? (
                 <input
                   type="number"
@@ -417,7 +417,7 @@ const TicketDetail: FC<{
                   className="input-field text-xs py-1.5"
                 />
               ) : (
-                <div className="text-sm font-semibold text-cocoa-400">
+                <div className="text-sm font-semibold text-cocoa-500">
                   {ticket.actualCost != null ? formatIDR(ticket.actualCost) : 'Pending'}
                 </div>
               )}
@@ -427,7 +427,7 @@ const TicketDetail: FC<{
 
         {/* Notes */}
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-cocoa-400 mb-2">Notes</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-cocoa-500 mb-2">Notes</h4>
           <textarea
             rows={3}
             value={notes}
@@ -576,7 +576,7 @@ const MaintenanceTickets: FC = () => {
     { label: 'In Progress',   value: inProgressCount, icon: Wrench,        style: 'text-gold-500' },
     { label: 'Pending',       value: pendingCount,    icon: PackageSearch, style: 'text-navy-500' },
     { label: 'Resolved',      value: resolvedCount,   icon: CheckCircle,   style: 'text-teal-500' },
-    { label: 'Avg Resolution',value: avgTime,         icon: Clock,         style: 'text-cocoa-400' },
+    { label: 'Avg Resolution',value: avgTime,         icon: Clock,         style: 'text-cocoa-500' },
   ]
 
   return (
@@ -586,10 +586,10 @@ const MaintenanceTickets: FC = () => {
         {kpis.map((k) => {
           const Icon = k.icon
           return (
-            <div key={k.label} className="flex items-center gap-2 bg-white border border-sand-200 rounded-xl px-4 py-2.5 shadow-card">
+            <div key={k.label} className="flex items-center gap-2 bg-white border border-sand-300 rounded-xl px-4 py-2.5 shadow-card">
               <Icon className={clsx('w-4 h-4', k.style)} />
-              <span className="font-display text-lg font-semibold text-navy-800">{k.value}</span>
-              <span className="text-xs text-cocoa-400">{k.label}</span>
+              <span className="font-display text-lg font-semibold text-cocoa-800">{k.value}</span>
+              <span className="text-xs text-cocoa-500">{k.label}</span>
             </div>
           )
         })}
@@ -601,7 +601,7 @@ const MaintenanceTickets: FC = () => {
           <Plus className="w-4 h-4" />New Ticket
         </button>
         <div className="relative">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-cocoa-400" />
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-cocoa-500" />
           <input
             type="text"
             placeholder="Search tickets…"
@@ -621,7 +621,7 @@ const MaintenanceTickets: FC = () => {
                 'flex-shrink-0 text-xs px-3 py-1.5 rounded-full font-medium border transition-all duration-200',
                 categoryFilter === c
                   ? 'bg-navy-800 text-white border-navy-800'
-                  : 'bg-white text-cocoa-600 border-sand-200 hover:border-navy-300',
+                  : 'bg-white text-cocoa-600 border-sand-300 hover:border-navy-300',
               )}
             >{c}</button>
           ))}
@@ -642,7 +642,7 @@ const MaintenanceTickets: FC = () => {
                     : p === 'high'   ? 'bg-terra-50 text-terra-700 border-terra-200 hover:bg-terra-100'
                     : p === 'medium' ? 'bg-gold-50 text-gold-700 border-gold-200 hover:bg-gold-100'
                     : p === 'low'    ? 'bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100'
-                    : 'bg-white text-cocoa-600 border-sand-200 hover:border-navy-300',
+                    : 'bg-white text-cocoa-600 border-sand-300 hover:border-navy-300',
                 )}
               >{label}</button>
             )
@@ -672,7 +672,7 @@ const MaintenanceTickets: FC = () => {
                   {/* Cards */}
                   <div className="space-y-2 flex-1">
                     {colTickets.length === 0 && (
-                      <div className="border-2 border-dashed border-sand-200 rounded-2xl p-4 text-center">
+                      <div className="border-2 border-dashed border-sand-300 rounded-2xl p-4 text-center">
                         <p className="text-xs text-cocoa-300">No tickets</p>
                       </div>
                     )}

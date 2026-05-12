@@ -44,8 +44,8 @@ const Modal: FC<ModalProps> = ({ open, onClose, title, subtitle, size = 'md', ch
         {/* Header */}
         <div className="flex items-start justify-between px-6 py-5 border-b border-sand-100 flex-shrink-0">
           <div>
-            <h2 className="font-display text-lg font-semibold text-navy-800">{title}</h2>
-            {subtitle && <p className="text-xs text-cocoa-400 mt-0.5">{subtitle}</p>}
+            <h2 className="font-display text-lg font-semibold text-cocoa-800">{title}</h2>
+            {subtitle && <p className="text-xs text-cocoa-500 mt-0.5">{subtitle}</p>}
           </div>
           <button
             onClick={onClose}

@@ -20,7 +20,7 @@ const typeConfig = {
   critical: { icon: XCircle, bg: 'bg-terra-50 border-terra-200', icon_color: 'text-terra-500', title_color: 'text-terra-800', dot: 'bg-terra-400' },
   urgent:   { icon: AlertCircle, bg: 'bg-gold-50 border-gold-200', icon_color: 'text-gold-600', title_color: 'text-gold-800', dot: 'bg-gold-400' },
   warning:  { icon: AlertTriangle, bg: 'bg-gold-50 border-gold-200', icon_color: 'text-gold-600', title_color: 'text-gold-800', dot: 'bg-gold-400' },
-  info:     { icon: Info, bg: 'bg-navy-50 border-navy-200', icon_color: 'text-navy-500', title_color: 'text-navy-800', dot: 'bg-navy-400' },
+  info:     { icon: Info, bg: 'bg-navy-50 border-navy-200', icon_color: 'text-navy-500', title_color: 'text-cocoa-800', dot: 'bg-navy-400' },
 }
 
 const AlertBanner: FC<AlertBannerProps> = ({ alerts, compact = false }) => {
@@ -49,9 +49,9 @@ const AlertBanner: FC<AlertBannerProps> = ({ alerts, compact = false }) => {
               {!compact && <p className="text-xs text-cocoa-600 mt-0.5">{alert.body}</p>}
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-xs text-cocoa-400">{alert.time}</span>
+              <span className="text-xs text-cocoa-500">{alert.time}</span>
               <button className="w-5 h-5 rounded-full hover:bg-black/10 flex items-center justify-center transition-colors">
-                <X className="w-3 h-3 text-cocoa-400" />
+                <X className="w-3 h-3 text-cocoa-500" />
               </button>
             </div>
           </div>

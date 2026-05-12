@@ -57,7 +57,7 @@ const MobileHome: FC = () => {
 
       {/* Quick Actions */}
       <div className="px-4 mt-4">
-        <h3 className="font-semibold text-sm text-navy-800 mb-3">Quick Actions</h3>
+        <h3 className="font-semibold text-sm text-cocoa-800 mb-3">Quick Actions</h3>
         <div className="grid grid-cols-4 gap-3">
           {[
             { icon: CheckSquare, label: 'Checklist', color: 'bg-teal-50 text-teal-600', border: 'border-teal-200' },
@@ -79,7 +79,7 @@ const MobileHome: FC = () => {
       {/* Today's Tasks */}
       <div className="px-4 mt-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-sm text-navy-800">Today's Tasks</h3>
+          <h3 className="font-semibold text-sm text-cocoa-800">Today's Tasks</h3>
           <span className="text-xs text-teal-600 font-medium">{tasks.filter(t => t.done).length}/{tasks.length} done</span>
         </div>
         <div className="space-y-2.5">
@@ -87,23 +87,23 @@ const MobileHome: FC = () => {
             <div key={task.id} className={clsx(
               'flex items-center gap-3 p-4 rounded-2xl border bg-white shadow-card transition-all duration-200',
               task.done ? 'opacity-60' : 'hover:shadow-card-hover',
-              task.urgent && !task.done ? 'border-terra-200 ring-1 ring-terra-100' : 'border-sand-200'
+              task.urgent && !task.done ? 'border-terra-200 ring-1 ring-terra-100' : 'border-sand-300'
             )}>
               <div className={clsx(
                 'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
                 task.done ? 'bg-teal-100' : task.urgent ? 'bg-terra-100' : 'bg-sand-100'
               )}>
-                <CheckSquare className={clsx('w-4 h-4', task.done ? 'text-teal-600' : task.urgent ? 'text-terra-500' : 'text-cocoa-400')} />
+                <CheckSquare className={clsx('w-4 h-4', task.done ? 'text-teal-600' : task.urgent ? 'text-terra-500' : 'text-cocoa-500')} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className={clsx('text-sm font-semibold', task.done ? 'text-cocoa-400 line-through' : 'text-navy-800')}>{task.title}</div>
+                <div className={clsx('text-sm font-semibold', task.done ? 'text-cocoa-500 line-through' : 'text-cocoa-800')}>{task.title}</div>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <MapPin className="w-3 h-3 text-cocoa-400" />
-                  <span className="text-xs text-cocoa-400">{task.villa}</span>
+                  <MapPin className="w-3 h-3 text-cocoa-500" />
+                  <span className="text-xs text-cocoa-500">{task.villa}</span>
                 </div>
               </div>
               <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                <div className="flex items-center gap-1 text-xs text-cocoa-400">
+                <div className="flex items-center gap-1 text-xs text-cocoa-500">
                   <Clock className="w-3 h-3" />
                   {task.time}
                 </div>
@@ -117,22 +117,22 @@ const MobileHome: FC = () => {
 
       {/* Upcoming check-in */}
       <div className="px-4 mt-5">
-        <h3 className="font-semibold text-sm text-navy-800 mb-3">Today's Arrivals</h3>
+        <h3 className="font-semibold text-sm text-cocoa-800 mb-3">Today's Arrivals</h3>
         <div className="space-y-2">
           {[
             { guest: 'Sophia Laurent', villa: 'Villa Tirta 05', time: '14:00', guests: 2, nights: 4 },
             { guest: 'Raj Patel', villa: 'Villa Seminyak 07', time: '15:00', guests: 4, nights: 7 },
           ].map((arrival) => (
-            <div key={arrival.guest} className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-sand-200 shadow-card">
+            <div key={arrival.guest} className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-sand-300 shadow-card">
               <div className="w-10 h-10 rounded-full bg-navy-100 flex items-center justify-center flex-shrink-0">
                 <span className="text-sm font-semibold text-navy-700">{arrival.guest.split(' ').map(n => n[0]).join('')}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-navy-800">{arrival.guest}</div>
-                <div className="text-xs text-cocoa-400">{arrival.villa} · {arrival.guests} guests · {arrival.nights}N</div>
+                <div className="text-sm font-semibold text-cocoa-800">{arrival.guest}</div>
+                <div className="text-xs text-cocoa-500">{arrival.villa} · {arrival.guests} guests · {arrival.nights}N</div>
               </div>
               <div className="text-right">
-                <div className="text-sm font-bold text-navy-800">{arrival.time}</div>
+                <div className="text-sm font-bold text-cocoa-800">{arrival.time}</div>
                 <div className="text-xs text-teal-600">Check-in</div>
               </div>
             </div>

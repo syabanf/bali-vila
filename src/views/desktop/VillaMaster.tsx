@@ -62,8 +62,8 @@ const statusDot: Record<VillaStatus, string> = {
 const kpiAccent = {
   gold:  { bg: 'bg-gold-50',  border: 'border-gold-200',  label: 'text-gold-700',  value: 'text-gold-800'  },
   teal:  { bg: 'bg-teal-50',  border: 'border-teal-200',  label: 'text-teal-700',  value: 'text-teal-800'  },
-  navy:  { bg: 'bg-navy-50',  border: 'border-navy-200',  label: 'text-navy-700',  value: 'text-navy-800'  },
-  plain: { bg: 'bg-sand-50',  border: 'border-sand-200',  label: 'text-cocoa-500', value: 'text-navy-800'  },
+  navy:  { bg: 'bg-navy-50',  border: 'border-navy-200',  label: 'text-navy-700',  value: 'text-cocoa-800'  },
+  plain: { bg: 'bg-sand-50',  border: 'border-sand-300',  label: 'text-cocoa-500', value: 'text-cocoa-800'  },
 }
 
 const ZONES: Zone[] = ['All', 'Seminyak', 'Canggu', 'Ubud', 'Jimbaran', 'Bukit']
@@ -92,7 +92,7 @@ const KPIBlock: FC<KPIBlockProps> = ({ label, value, sub, accent, icon }) => {
       </div>
       <div className="min-w-0">
         <div className={clsx('font-display text-2xl font-semibold leading-none', c.value)}>{value}</div>
-        {sub && <div className="text-xs text-cocoa-400 mt-0.5">{sub}</div>}
+        {sub && <div className="text-xs text-cocoa-500 mt-0.5">{sub}</div>}
         <div className={clsx('text-xs font-medium mt-1', c.label)}>{label}</div>
       </div>
     </div>
@@ -252,7 +252,7 @@ const VillaForm: FC<VillaFormProps> = ({ form, setForm }) => {
           {AMENITY_OPTIONS.map((item) => (
             <label
               key={item}
-              className="flex items-center gap-2 p-2 rounded-xl border border-sand-200 bg-sand-50 cursor-pointer hover:bg-sand-100 transition-colors text-xs text-cocoa-700 font-medium select-none"
+              className="flex items-center gap-2 p-2 rounded-xl border border-sand-300 bg-sand-50 cursor-pointer hover:bg-sand-100 transition-colors text-xs text-cocoa-700 font-medium select-none"
             >
               <input
                 type="checkbox"
@@ -379,7 +379,7 @@ const VillaMaster: FC = () => {
       <div className="grid grid-cols-12 gap-4 h-full">
 
         {/* ── Left Panel: Villa List ─────────────────────────────────────── */}
-        <div className="col-span-12 xl:col-span-5 bg-white rounded-2xl border border-sand-200 shadow-card flex flex-col overflow-hidden">
+        <div className="col-span-12 xl:col-span-5 bg-white rounded-2xl border border-sand-300 shadow-card flex flex-col overflow-hidden">
 
           {/* Search + Add */}
           <div className="p-4 border-b border-sand-100 space-y-3">
@@ -430,14 +430,14 @@ const VillaMaster: FC = () => {
                   <ChevronDown className="w-3 h-3" />
                 </button>
                 {showStatusDropdown && (
-                  <div className="absolute right-0 top-full mt-1.5 bg-white border border-sand-200 rounded-xl shadow-card-hover z-20 overflow-hidden min-w-[130px]">
+                  <div className="absolute right-0 top-full mt-1.5 bg-white border border-sand-300 rounded-xl shadow-card-hover z-20 overflow-hidden min-w-[130px]">
                     {STATUSES.map((s) => (
                       <button
                         key={s}
                         onClick={() => { setStatusFilter(s); setShowStatusDropdown(false) }}
                         className={clsx(
                           'w-full text-left px-4 py-2 text-xs hover:bg-sand-50 transition-colors',
-                          statusFilter === s ? 'text-navy-800 font-semibold bg-navy-50' : 'text-cocoa-600'
+                          statusFilter === s ? 'text-cocoa-800 font-semibold bg-navy-50' : 'text-cocoa-600'
                         )}
                       >
                         {s === 'All' ? 'All Status' : s}
@@ -448,13 +448,13 @@ const VillaMaster: FC = () => {
               </div>
             </div>
 
-            <p className="text-xs text-cocoa-400">{filtered.length} villa{filtered.length !== 1 ? 's' : ''}</p>
+            <p className="text-xs text-cocoa-500">{filtered.length} villa{filtered.length !== 1 ? 's' : ''}</p>
           </div>
 
           {/* Villa list */}
           <div className="overflow-y-auto flex-1 divide-y divide-sand-100">
             {filtered.length === 0 ? (
-              <div className="p-8 text-center text-sm text-cocoa-400">No villas match your filters.</div>
+              <div className="p-8 text-center text-sm text-cocoa-500">No villas match your filters.</div>
             ) : (
               filtered.map((villa) => {
                 const zc = zoneColors[villa.zone] || zoneColors['Seminyak']
@@ -477,12 +477,12 @@ const VillaMaster: FC = () => {
                       {/* Middle info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-sm font-semibold text-navy-800 truncate">{villa.name}</span>
+                          <span className="text-sm font-semibold text-cocoa-800 truncate">{villa.name}</span>
                           <span className={clsx('inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-sand-100 text-cocoa-600')}>
                             {villa.bedrooms} BR
                           </span>
                         </div>
-                        <div className="text-xs text-cocoa-400 truncate">
+                        <div className="text-xs text-cocoa-500 truncate">
                           {villa.zone} · {villa.type}
                         </div>
                       </div>
@@ -493,7 +493,7 @@ const VillaMaster: FC = () => {
                           <span className={clsx('w-1.5 h-1.5 rounded-full mr-1', statusDot[villa.status])} />
                           {villa.status}
                         </span>
-                        <span className="font-display text-sm font-semibold text-navy-800">
+                        <span className="font-display text-sm font-semibold text-cocoa-800">
                           ${villa.monthlyRevenue.toLocaleString()}
                         </span>
                       </div>
@@ -506,7 +506,7 @@ const VillaMaster: FC = () => {
         </div>
 
         {/* ── Right Panel: Villa Detail ──────────────────────────────────── */}
-        <div className="col-span-12 xl:col-span-7 bg-white rounded-2xl border border-sand-200 shadow-card flex flex-col overflow-hidden">
+        <div className="col-span-12 xl:col-span-7 bg-white rounded-2xl border border-sand-300 shadow-card flex flex-col overflow-hidden">
 
           {/* Dark navy header */}
           <div className="bg-navy-900 px-6 py-5 bg-batik flex-shrink-0">
@@ -577,16 +577,16 @@ const VillaMaster: FC = () => {
             </div>
 
             {/* Owner info card */}
-            <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-4 hover:shadow-card-hover transition-all duration-200">
+            <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-4 hover:shadow-card-hover transition-all duration-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center flex-shrink-0">
                     <User className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <div className="text-xs text-cocoa-400 mb-0.5">Villa Owner</div>
-                    <div className="text-sm font-semibold text-navy-800">{selectedVilla.ownerName}</div>
-                    <div className="text-xs text-cocoa-400">Owner ID: {selectedVilla.ownerId}</div>
+                    <div className="text-xs text-cocoa-500 mb-0.5">Villa Owner</div>
+                    <div className="text-sm font-semibold text-cocoa-800">{selectedVilla.ownerName}</div>
+                    <div className="text-xs text-cocoa-500">Owner ID: {selectedVilla.ownerId}</div>
                   </div>
                 </div>
                 <button className="flex items-center gap-1 text-xs font-medium text-navy-700 hover:text-navy-900 transition-colors">
@@ -599,43 +599,43 @@ const VillaMaster: FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
               {/* Address */}
-              <div className="bg-sand-50 rounded-2xl border border-sand-200 p-4">
+              <div className="bg-sand-50 rounded-2xl border border-sand-300 p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="w-4 h-4 text-cocoa-400" />
+                  <MapPin className="w-4 h-4 text-cocoa-500" />
                   <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wider">Address</span>
                 </div>
-                <p className="text-sm text-navy-800">{selectedVilla.address}</p>
+                <p className="text-sm text-cocoa-800">{selectedVilla.address}</p>
               </div>
 
               {/* Supervisor */}
-              <div className="bg-sand-50 rounded-2xl border border-sand-200 p-4">
+              <div className="bg-sand-50 rounded-2xl border border-sand-300 p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <User className="w-4 h-4 text-cocoa-400" />
+                  <User className="w-4 h-4 text-cocoa-500" />
                   <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wider">Supervisor</span>
                 </div>
-                <p className="text-sm font-medium text-navy-800">{selectedVilla.supervisor}</p>
+                <p className="text-sm font-medium text-cocoa-800">{selectedVilla.supervisor}</p>
               </div>
 
               {/* Last Inspection */}
-              <div className="bg-sand-50 rounded-2xl border border-sand-200 p-4">
+              <div className="bg-sand-50 rounded-2xl border border-sand-300 p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <ClipboardList className="w-4 h-4 text-cocoa-400" />
+                  <ClipboardList className="w-4 h-4 text-cocoa-500" />
                   <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wider">Last Inspection</span>
                 </div>
-                <p className="text-sm font-medium text-navy-800">{selectedVilla.lastInspection}</p>
+                <p className="text-sm font-medium text-cocoa-800">{selectedVilla.lastInspection}</p>
               </div>
 
               {/* Next Available */}
-              <div className="bg-sand-50 rounded-2xl border border-sand-200 p-4">
+              <div className="bg-sand-50 rounded-2xl border border-sand-300 p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <CalendarDays className="w-4 h-4 text-cocoa-400" />
+                  <CalendarDays className="w-4 h-4 text-cocoa-500" />
                   <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wider">Next Available</span>
                 </div>
-                <p className="text-sm font-medium text-navy-800">{selectedVilla.nextAvailable}</p>
+                <p className="text-sm font-medium text-cocoa-800">{selectedVilla.nextAvailable}</p>
               </div>
 
               {/* Amenities */}
-              <div className="md:col-span-2 bg-sand-50 rounded-2xl border border-sand-200 p-4">
+              <div className="md:col-span-2 bg-sand-50 rounded-2xl border border-sand-300 p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-xs font-semibold text-cocoa-500 uppercase tracking-wider">Amenities</span>
                 </div>

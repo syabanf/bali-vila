@@ -60,11 +60,11 @@
   }
 
   .kpi-card {
-    @apply bg-white rounded-2xl p-5 shadow-card border border-sand-200 hover:shadow-card-hover transition-all duration-300;
+    @apply bg-white rounded-2xl p-5 shadow-card border border-sand-300 hover:shadow-card-hover transition-all duration-300;
   }
 
   .section-title {
-    @apply font-display text-2xl font-semibold text-navy-800;
+    @apply font-display text-2xl font-semibold text-cocoa-800;
   }
 
   .badge-success {
@@ -88,7 +88,7 @@
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-navy-800 text-sm font-medium border border-sand-300 hover:border-navy-300 hover:bg-sand-50 transition-all duration-200;
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-cocoa-800 text-sm font-medium border border-sand-300 hover:border-navy-300 hover:bg-sand-50 transition-all duration-200;
   }
 
   .btn-gold {
@@ -100,7 +100,7 @@
   }
 
   .table-header {
-    @apply text-xs font-semibold uppercase tracking-wider text-cocoa-400 py-3 px-4;
+    @apply text-xs font-semibold uppercase tracking-wider text-cocoa-500 py-3 px-4;
   }
 
   .table-cell {

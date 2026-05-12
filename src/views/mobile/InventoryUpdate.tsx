@@ -78,7 +78,7 @@ const InventoryUpdate: FC = () => {
             onClick={() => setCategory(cat)}
             className={clsx(
               'flex-shrink-0 text-xs px-3 py-2 rounded-full font-medium border transition-all duration-200',
-              category === cat ? 'bg-navy-800 text-white border-navy-800' : 'bg-white text-cocoa-600 border-sand-200'
+              category === cat ? 'bg-navy-800 text-white border-navy-800' : 'bg-white text-cocoa-600 border-sand-300'
             )}
           >{cat}</button>
         ))}
@@ -94,12 +94,12 @@ const InventoryUpdate: FC = () => {
           return (
             <div key={item.name} className={clsx(
               'bg-white rounded-2xl border shadow-card p-4',
-              isLow ? 'border-terra-200' : 'border-sand-200'
+              isLow ? 'border-terra-200' : 'border-sand-300'
             )}>
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <div className="font-semibold text-sm text-navy-800">{item.name}</div>
-                  <div className="text-xs text-cocoa-400">Standard: {item.standard} units</div>
+                  <div className="font-semibold text-sm text-cocoa-800">{item.name}</div>
+                  <div className="text-xs text-cocoa-500">Standard: {item.standard} units</div>
                 </div>
                 {isLow && (
                   <div className="flex items-center gap-1 badge-danger">
@@ -115,7 +115,7 @@ const InventoryUpdate: FC = () => {
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setCount(item.name, current - 1)}
-                  className="w-10 h-10 rounded-xl bg-sand-100 border border-sand-200 flex items-center justify-center hover:bg-sand-200 transition-colors active:scale-95"
+                  className="w-10 h-10 rounded-xl bg-sand-100 border border-sand-300 flex items-center justify-center hover:bg-sand-200 transition-colors active:scale-95"
                 >
                   <Minus className="w-4 h-4 text-cocoa-600" />
                 </button>
@@ -123,14 +123,14 @@ const InventoryUpdate: FC = () => {
                 <div className="flex-1 text-center">
                   <div className={clsx(
                     'font-display text-3xl font-semibold',
-                    diff < 0 ? 'text-terra-600' : 'text-navy-800'
+                    diff < 0 ? 'text-terra-600' : 'text-cocoa-800'
                   )}>{current}</div>
-                  <div className="text-xs text-cocoa-400">current count</div>
+                  <div className="text-xs text-cocoa-500">current count</div>
                 </div>
 
                 <button
                   onClick={() => setCount(item.name, current + 1)}
-                  className="w-10 h-10 rounded-xl bg-sand-100 border border-sand-200 flex items-center justify-center hover:bg-sand-200 transition-colors active:scale-95"
+                  className="w-10 h-10 rounded-xl bg-sand-100 border border-sand-300 flex items-center justify-center hover:bg-sand-200 transition-colors active:scale-95"
                 >
                   <Plus className="w-4 h-4 text-cocoa-600" />
                 </button>

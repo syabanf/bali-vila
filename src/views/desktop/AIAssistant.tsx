@@ -63,14 +63,14 @@ const AIAssistant: FC = () => {
     <div className="animate-fade-in h-full">
       <div className="grid grid-cols-12 gap-4">
         {/* Chat Area */}
-        <div className="col-span-12 xl:col-span-8 flex flex-col bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden" style={{ height: 'min(calc(100vh - 160px), 680px)' }}>
+        <div className="col-span-12 xl:col-span-8 flex flex-col bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden" style={{ height: 'min(calc(100vh - 160px), 680px)' }}>
           {/* Chat header */}
           <div className="px-6 py-4 border-b border-sand-100 bg-sand-50 flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-navy-100 flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-navy-600" />
             </div>
             <div>
-              <div className="font-semibold text-navy-800 text-sm">BAV AI Maintenance Assistant</div>
+              <div className="font-semibold text-cocoa-800 text-sm">BAV AI Maintenance Assistant</div>
               <div className="text-xs text-teal-600 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse-slow inline-block" />
                 Online · Powered by AI
@@ -95,7 +95,7 @@ const AIAssistant: FC = () => {
                     'rounded-2xl px-4 py-3 text-sm leading-relaxed',
                     msg.role === 'user'
                       ? 'bg-navy-800 text-white rounded-br-md'
-                      : 'bg-sand-50 border border-sand-200 text-navy-800 rounded-bl-md'
+                      : 'bg-sand-50 border border-sand-300 text-cocoa-800 rounded-bl-md'
                   )}>
                     {msg.role === 'ai' ? (
                       <div className="space-y-1.5">
@@ -134,7 +134,7 @@ const AIAssistant: FC = () => {
                           'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-all duration-200',
                           action.includes('Assign') ? 'bg-navy-800 text-white border-navy-800 hover:bg-navy-700' :
                           action === 'Create Ticket' ? 'bg-terra-50 text-terra-700 border-terra-200 hover:bg-terra-100' :
-                          'bg-white text-navy-700 border-sand-200 hover:border-navy-300'
+                          'bg-white text-navy-700 border-sand-300 hover:border-navy-300'
                         )}>
                           {action}
                           <ArrowRight className="w-3 h-3" />
@@ -143,7 +143,7 @@ const AIAssistant: FC = () => {
                     </div>
                   )}
 
-                  <span className="text-xs text-cocoa-400 px-1">{msg.time}</span>
+                  <span className="text-xs text-cocoa-500 px-1">{msg.time}</span>
                 </div>
               </div>
             ))}
@@ -153,7 +153,7 @@ const AIAssistant: FC = () => {
                 <div className="w-7 h-7 rounded-full bg-navy-100 flex items-center justify-center">
                   <Sparkles className="w-3.5 h-3.5 text-navy-600" />
                 </div>
-                <div className="bg-sand-50 border border-sand-200 rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
+                <div className="bg-sand-50 border border-sand-300 rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-cocoa-300 animate-bounce [animation-delay:0ms]" />
                   <span className="w-2 h-2 rounded-full bg-cocoa-300 animate-bounce [animation-delay:150ms]" />
                   <span className="w-2 h-2 rounded-full bg-cocoa-300 animate-bounce [animation-delay:300ms]" />
@@ -165,12 +165,12 @@ const AIAssistant: FC = () => {
 
           {/* Input area */}
           <div className="px-5 py-4 border-t border-sand-100 bg-sand-50">
-            <div className="flex items-center gap-2 bg-white rounded-xl border border-sand-200 px-3 py-2.5 shadow-card">
+            <div className="flex items-center gap-2 bg-white rounded-xl border border-sand-300 px-3 py-2.5 shadow-card">
               <button className="w-7 h-7 rounded-lg hover:bg-sand-100 flex items-center justify-center transition-colors">
-                <Paperclip className="w-4 h-4 text-cocoa-400" />
+                <Paperclip className="w-4 h-4 text-cocoa-500" />
               </button>
               <button className="w-7 h-7 rounded-lg hover:bg-sand-100 flex items-center justify-center transition-colors">
-                <Image className="w-4 h-4 text-cocoa-400" />
+                <Image className="w-4 h-4 text-cocoa-500" />
               </button>
               <input
                 type="text"
@@ -181,7 +181,7 @@ const AIAssistant: FC = () => {
                 className="flex-1 bg-transparent text-sm text-cocoa-700 placeholder-cocoa-300 outline-none"
               />
               <button className="w-7 h-7 rounded-lg hover:bg-sand-100 flex items-center justify-center transition-colors">
-                <Mic className="w-4 h-4 text-cocoa-400" />
+                <Mic className="w-4 h-4 text-cocoa-500" />
               </button>
               <button
                 onClick={handleSend}
@@ -190,15 +190,15 @@ const AIAssistant: FC = () => {
                 <Send className="w-3.5 h-3.5 text-white" />
               </button>
             </div>
-            <p className="text-xs text-cocoa-400 mt-2 text-center">AI suggestions are diagnostic guides. Always verify with a qualified technician for safety-critical issues.</p>
+            <p className="text-xs text-cocoa-500 mt-2 text-center">AI suggestions are diagnostic guides. Always verify with a qualified technician for safety-critical issues.</p>
           </div>
         </div>
 
         {/* Right Sidebar */}
         <div className="col-span-12 xl:col-span-4 space-y-4">
           {/* Quick prompts */}
-          <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-5">
-            <h4 className="font-display text-base font-semibold text-navy-800 mb-3">Quick Diagnostics</h4>
+          <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-5">
+            <h4 className="font-display text-base font-semibold text-cocoa-800 mb-3">Quick Diagnostics</h4>
             <div className="space-y-2">
               {[
                 { label: 'Low water pressure', icon: Droplets },
@@ -213,11 +213,11 @@ const AIAssistant: FC = () => {
                   <button
                     key={prompt.label}
                     onClick={() => setInput(prompt.label)}
-                    className="w-full flex items-center gap-3 p-2.5 rounded-xl bg-sand-50 border border-sand-200 hover:border-navy-200 hover:bg-sand-100 transition-all duration-200 text-sm text-navy-700 font-medium"
+                    className="w-full flex items-center gap-3 p-2.5 rounded-xl bg-sand-50 border border-sand-300 hover:border-navy-200 hover:bg-sand-100 transition-all duration-200 text-sm text-navy-700 font-medium"
                   >
                     <Icon className="w-4 h-4 text-navy-500 flex-shrink-0" />
                     {prompt.label}
-                    <ArrowRight className="w-3.5 h-3.5 ml-auto text-cocoa-400" />
+                    <ArrowRight className="w-3.5 h-3.5 ml-auto text-cocoa-500" />
                   </button>
                 )
               })}
@@ -225,21 +225,21 @@ const AIAssistant: FC = () => {
           </div>
 
           {/* Recent tickets */}
-          <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-5">
-            <h4 className="font-display text-base font-semibold text-navy-800 mb-3">Open Tickets</h4>
+          <div className="bg-white rounded-2xl border border-sand-300 shadow-card p-5">
+            <h4 className="font-display text-base font-semibold text-cocoa-800 mb-3">Open Tickets</h4>
             <div className="space-y-2.5">
               {[
                 { id: 'TK001', villa: 'Villa Tirta 05', issue: 'Pump pressure low', urgency: 'medium', status: 'In Progress' },
                 { id: 'TK002', villa: 'Villa Sawah 03', issue: 'AC unit room 2', urgency: 'high', status: 'Pending' },
                 { id: 'TK003', villa: 'Villa Puri 12', issue: 'Drain clog kitchen', urgency: 'low', status: 'Scheduled' },
               ].map((ticket) => (
-                <div key={ticket.id} className="flex items-center gap-3 p-2.5 rounded-xl border border-sand-200 bg-sand-50">
+                <div key={ticket.id} className="flex items-center gap-3 p-2.5 rounded-xl border border-sand-300 bg-sand-50">
                   <div className={clsx('w-2 h-2 rounded-full flex-shrink-0',
                     ticket.urgency === 'high' ? 'bg-terra-400' : ticket.urgency === 'medium' ? 'bg-gold-400' : 'bg-teal-400'
                   )} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-semibold text-navy-800 truncate">{ticket.issue}</div>
-                    <div className="text-xs text-cocoa-400">{ticket.villa}</div>
+                    <div className="text-xs font-semibold text-cocoa-800 truncate">{ticket.issue}</div>
+                    <div className="text-xs text-cocoa-500">{ticket.villa}</div>
                   </div>
                   <span className="text-xs text-cocoa-500 font-medium">{ticket.status}</span>
                 </div>

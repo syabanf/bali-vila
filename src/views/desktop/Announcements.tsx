@@ -51,10 +51,10 @@ Bali Asia Villa — Guest Relations`
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-12 gap-4">
         {/* Input Form */}
-        <div className="col-span-12 xl:col-span-5 bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden">
+        <div className="col-span-12 xl:col-span-5 bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden">
           <div className="p-5 border-b border-sand-100">
-            <h3 className="font-display text-lg font-semibold text-navy-800">Reservation Details</h3>
-            <p className="text-xs text-cocoa-400 mt-0.5">Fill in to generate announcements</p>
+            <h3 className="font-display text-lg font-semibold text-cocoa-800">Reservation Details</h3>
+            <p className="text-xs text-cocoa-500 mt-0.5">Fill in to generate announcements</p>
           </div>
           <div className="p-5 space-y-4">
             <div className="grid grid-cols-2 gap-3">
@@ -114,7 +114,7 @@ Bali Asia Villa — Guest Relations`
         {/* AI Output */}
         <div className="col-span-12 xl:col-span-7 space-y-4">
           {/* Tab selector */}
-          <div className="flex items-center gap-2 bg-white rounded-xl border border-sand-200 p-1 shadow-card">
+          <div className="flex items-center gap-2 bg-white rounded-xl border border-sand-300 p-1 shadow-card">
             {[
               { id: 'whatsapp', label: 'WhatsApp (Internal)', icon: MessageCircle },
               { id: 'guest', label: 'Guest Note', icon: Globe },
@@ -136,7 +136,7 @@ Bali Asia Villa — Guest Relations`
           </div>
 
           {generated && (
-            <div className="bg-white rounded-2xl border border-sand-200 shadow-card overflow-hidden animate-slide-up">
+            <div className="bg-white rounded-2xl border border-sand-300 shadow-card overflow-hidden animate-slide-up">
               <div className="flex items-center justify-between px-5 py-3 border-b border-sand-100 bg-sand-50">
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 rounded-full bg-teal-400/20 border border-teal-400/30 flex items-center justify-center">
@@ -156,14 +156,14 @@ Bali Asia Villa — Guest Relations`
                     {waMessage}
                   </div>
                 ) : (
-                  <div className="bg-sand-50 rounded-2xl p-6 border border-sand-200">
-                    <div className="flex items-center gap-3 mb-4 pb-4 border-b border-sand-200">
+                  <div className="bg-sand-50 rounded-2xl p-6 border border-sand-300">
+                    <div className="flex items-center gap-3 mb-4 pb-4 border-b border-sand-300">
                       <div className="w-10 h-10 rounded-full bg-navy-100 flex items-center justify-center">
                         <span className="text-sm font-semibold text-navy-700">BAV</span>
                       </div>
                       <div>
-                        <div className="text-sm font-semibold text-navy-800">Bali Asia Villa</div>
-                        <div className="text-xs text-cocoa-400">Guest Relations Team</div>
+                        <div className="text-sm font-semibold text-cocoa-800">Bali Asia Villa</div>
+                        <div className="text-xs text-cocoa-500">Guest Relations Team</div>
                       </div>
                     </div>
                     <p className="text-sm text-cocoa-700 leading-relaxed whitespace-pre-wrap">{guestNote}</p>
@@ -177,7 +177,7 @@ Bali Asia Villa — Guest Relations`
           {generated && (
             <div className="flex flex-wrap gap-2 animate-slide-up">
               {['Create Internal Task', 'Add to Calendar', 'Assign Housekeeping', 'Print Checklist'].map((action) => (
-                <button key={action} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-sand-200 text-xs font-medium text-navy-700 hover:border-navy-300 hover:bg-sand-50 transition-all duration-200 shadow-card">
+                <button key={action} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-sand-300 text-xs font-medium text-navy-700 hover:border-navy-300 hover:bg-sand-50 transition-all duration-200 shadow-card">
                   {action}
                   <ChevronRight className="w-3 h-3" />
                 </button>
