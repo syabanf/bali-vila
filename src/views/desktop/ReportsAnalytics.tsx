@@ -104,22 +104,22 @@ function RevenueTab() {
           <AreaChart data={revenueData} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
             <defs>
               <linearGradient id="gradDirect" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3D8B7A" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#3D8B7A" stopOpacity={0} />
+                <stop offset="5%" stopColor="#2E8B57" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#2E8B57" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="gradOta" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#C9A84C" stopOpacity={0.2} />
                 <stop offset="95%" stopColor="#C9A84C" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#EAE0CC" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}M`} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} tickFormatter={v => `${v}M`} />
             <Tooltip
-              contentStyle={{ borderRadius: '12px', border: '1px solid #EAE0CC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,32,64,0.08)' }}
+              contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
               formatter={(v: number) => [`IDR ${v}M`, '']}
             />
-            <Area type="monotone" dataKey="direct" name="Direct" stroke="#3D8B7A" strokeWidth={2} fill="url(#gradDirect)" />
+            <Area type="monotone" dataKey="direct" name="Direct" stroke="#2E8B57" strokeWidth={2} fill="url(#gradDirect)" />
             <Area type="monotone" dataKey="ota" name="OTA" stroke="#C9A84C" strokeWidth={2} fill="url(#gradOta)" />
           </AreaChart>
         </ResponsiveContainer>
@@ -210,7 +210,7 @@ function OccupancyTab() {
     .map(v => ({
       name: v.name.replace('Villa ', ''),
       rate: v.occupancyRate,
-      fill: v.occupancyRate >= 70 ? '#3D8B7A' : v.occupancyRate >= 50 ? '#C9A84C' : '#C4664A',
+      fill: v.occupancyRate >= 70 ? '#2E8B57' : v.occupancyRate >= 50 ? '#C9A84C' : '#B85234',
     }))
 
   return (
@@ -240,15 +240,15 @@ function OccupancyTab() {
         </div>
         <ResponsiveContainer width="100%" height={240}>
           <LineChart data={occupancyTrend} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#EAE0CC" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} domain={[50, 90]} tickFormatter={v => `${v}%`} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} domain={[50, 90]} tickFormatter={v => `${v}%`} />
             <Tooltip
-              contentStyle={{ borderRadius: '12px', border: '1px solid #EAE0CC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,32,64,0.08)' }}
+              contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
               formatter={(v: number) => [`${v}%`, '']}
             />
-            <ReferenceLine y={70} stroke="#EAE0CC" strokeDasharray="4 4" label={{ value: '70% threshold', position: 'insideTopRight', fontSize: 10, fill: '#BAA882' }} />
-            <Line type="monotone" dataKey="rate" name="Actual" stroke="#0F2040" strokeWidth={2.5} dot={{ fill: '#0F2040', r: 4 }} />
+            <ReferenceLine y={70} stroke="#D9E2EC" strokeDasharray="4 4" label={{ value: '70% threshold', position: 'insideTopRight', fontSize: 10, fill: '#7A8B95' }} />
+            <Line type="monotone" dataKey="rate" name="Actual" stroke="#0A2E4E" strokeWidth={2.5} dot={{ fill: '#0A2E4E', r: 4 }} />
             <Line type="monotone" dataKey="target" name="Target" stroke="#C9A84C" strokeWidth={2} strokeDasharray="5 4" dot={false} />
           </LineChart>
         </ResponsiveContainer>
@@ -266,11 +266,11 @@ function OccupancyTab() {
         </div>
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={villaBars} layout="vertical" margin={{ left: 10, right: 30, top: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#EAE0CC" horizontal={false} />
-            <XAxis type="number" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} domain={[0, 100]} tickFormatter={v => `${v}%`} />
-            <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} width={80} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" horizontal={false} />
+            <XAxis type="number" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} domain={[0, 100]} tickFormatter={v => `${v}%`} />
+            <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} width={80} />
             <Tooltip
-              contentStyle={{ borderRadius: '12px', border: '1px solid #EAE0CC', fontSize: 12 }}
+              contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12 }}
               formatter={(v: number) => [`${v}%`, 'Occupancy']}
             />
             <Bar dataKey="rate" radius={[0, 6, 6, 0]}>
@@ -288,12 +288,12 @@ function OccupancyTab() {
 // ─── Maintenance Tab ──────────────────────────────────────────────────────────
 
 const MAINT_COLORS: Record<string, string> = {
-  plumbing: '#162850',
-  electrical: '#3D8B7A',
+  plumbing: '#0A2E4E',
+  electrical: '#2E8B57',
   ac: '#C9A84C',
-  pool: '#C4664A',
-  carpentry: '#AA7858',
-  other: '#D4C4A0',
+  pool: '#B85234',
+  carpentry: '#7AB5DC',
+  other: '#C0CFDB',
 }
 
 const MAINT_LABELS: Record<string, string> = {
@@ -362,11 +362,11 @@ function MaintenanceTab() {
         </div>
         <ResponsiveContainer width="100%" height={260}>
           <BarChart data={maintenanceCostData} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#EAE0CC" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}K`} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}K`} />
             <Tooltip
-              contentStyle={{ borderRadius: '12px', border: '1px solid #EAE0CC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,32,64,0.08)' }}
+              contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
               formatter={(v: number, name: string) => [`IDR ${v.toLocaleString()}`, MAINT_LABELS[name] ?? name]}
             />
             {categories.map(cat => (
@@ -538,13 +538,13 @@ function StaffChannelTab() {
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={channelChartData} margin={{ top: 5, right: 10, bottom: 0, left: -10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#EAE0CC" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ borderRadius: '12px', border: '1px solid #EAE0CC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,32,64,0.08)' }}
+                  contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
                 />
-                <Bar dataKey="Bookings" fill="#0F2040" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Bookings" fill="#0F4C81" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="Revenue" fill="#C9A84C" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>

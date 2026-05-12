@@ -15,9 +15,9 @@ export const revenueData = [
 ];
 
 export const occupancyData = [
-  { name: 'Occupied', value: 68, color: '#3D8B7A' },
-  { name: 'Available', value: 22, color: '#E0D4B8' },
-  { name: 'Maintenance', value: 6, color: '#C4664A' },
+  { name: 'Occupied', value: 68, color: '#2E8B57' },
+  { name: 'Available', value: 22, color: '#DCEBFA' },
+  { name: 'Maintenance', value: 6, color: '#B85234' },
   { name: 'Cleaning', value: 4, color: '#C9A84C' },
 ];
 

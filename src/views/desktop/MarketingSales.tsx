@@ -17,16 +17,16 @@ const stageMeta: Record<string, { color: string; bg: string; border: string }> =
 }
 
 const sourceColors: Record<string, string> = {
-  Instagram: '#C4664A', WhatsApp: '#3D8B7A', Website: '#0F2040',
-  OTA: '#C9A84C', Referral: '#5A9A8A',
+  Instagram: '#B85234', WhatsApp: '#2E8B57', Website: '#0A2E4E',
+  OTA: '#C9A84C', Referral: '#3AA566',
 }
 
 const funnelData = [
-  { name: 'Leads', value: 528, fill: '#0F2040' },
-  { name: 'Contacted', value: 312, fill: '#1E3560' },
-  { name: 'Qualified', value: 186, fill: '#3D8B7A' },
+  { name: 'Leads', value: 528, fill: '#0A2E4E' },
+  { name: 'Contacted', value: 312, fill: '#0F4C81' },
+  { name: 'Qualified', value: 186, fill: '#2E8B57' },
   { name: 'Proposal', value: 94, fill: '#C9A84C' },
-  { name: 'Booked', value: 48, fill: '#357E68' },
+  { name: 'Booked', value: 48, fill: '#1F6B43' },
 ]
 
 const MarketingSales: FC = () => {
@@ -155,7 +155,7 @@ const MarketingSales: FC = () => {
               <FunnelChart>
                 <Tooltip contentStyle={{ borderRadius: '10px', fontSize: 12 }} />
                 <Funnel dataKey="value" data={funnelData} isAnimationActive>
-                  <LabelList position="right" fill="#6A4030" stroke="none" dataKey="name" style={{ fontSize: 11 }} />
+                  <LabelList position="right" fill="#52616B" stroke="none" dataKey="name" style={{ fontSize: 11 }} />
                 </Funnel>
               </FunnelChart>
             </ResponsiveContainer>

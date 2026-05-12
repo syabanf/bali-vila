@@ -47,23 +47,23 @@ const ExecutiveDashboard: FC = () => {
             <AreaChart data={revenueData} margin={{ top: 5, right: 10, bottom: 0, left: 0 }}>
               <defs>
                 <linearGradient id="colorDirect" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#162850" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#162850" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#0F4C81" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#0F4C81" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorOTA" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3D8B7A" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#3D8B7A" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#2E8B57" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#2E8B57" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#EAE0CC" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}M`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#D9E2EC" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}M`} />
               <Tooltip
-                contentStyle={{ borderRadius: '12px', border: '1px solid #EAE0CC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,32,64,0.08)' }}
+                contentStyle={{ borderRadius: '12px', border: '1px solid #D9E2EC', fontSize: 12, boxShadow: '0 4px 24px rgba(15,76,129,0.08)' }}
                 formatter={(v: number) => [`IDR ${v}M`, '']}
               />
-              <Area type="monotone" dataKey="direct" stroke="#0F2040" strokeWidth={2} fill="url(#colorDirect)" />
-              <Area type="monotone" dataKey="ota" stroke="#3D8B7A" strokeWidth={2} fill="url(#colorOTA)" />
+              <Area type="monotone" dataKey="direct" stroke="#0F4C81" strokeWidth={2} fill="url(#colorDirect)" />
+              <Area type="monotone" dataKey="ota" stroke="#2E8B57" strokeWidth={2} fill="url(#colorOTA)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -80,7 +80,7 @@ const ExecutiveDashboard: FC = () => {
                     <Cell key={i} fill={entry.color} />
                   ))}
                 </Pie>
-                <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="fill-navy-800 font-bold text-lg" style={{ fontSize: 20, fontWeight: 700, fill: '#0F2040' }}>68%</text>
+                <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="fill-navy-800 font-bold text-lg" style={{ fontSize: 20, fontWeight: 700, fill: '#0A2E4E' }}>68%</text>
               </PieChart>
             </ResponsiveContainer>
             <div className="flex-1 space-y-2">
@@ -221,22 +221,22 @@ const ExecutiveDashboard: FC = () => {
           <p className="text-xs text-cocoa-400 mb-4">Booking source this month</p>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={[
-              { channel: 'Direct', value: 58, color: '#0F2040' },
-              { channel: 'Airbnb', value: 22, color: '#3D8B7A' },
+              { channel: 'Direct', value: 58, color: '#0F4C81' },
+              { channel: 'Airbnb', value: 22, color: '#2E8B57' },
               { channel: 'Booking', value: 12, color: '#C9A84C' },
-              { channel: 'Expedia', value: 5, color: '#C4664A' },
-              { channel: 'Other', value: 3, color: '#BAA882' },
+              { channel: 'Expedia', value: 5, color: '#B85234' },
+              { channel: 'Other', value: 3, color: '#A0B5C4' },
             ]} layout="vertical" margin={{ left: 10, right: 20, top: 0, bottom: 0 }}>
               <XAxis type="number" hide />
-              <YAxis type="category" dataKey="channel" tick={{ fontSize: 11, fill: '#9A8868' }} axisLine={false} tickLine={false} width={55} />
-              <Tooltip contentStyle={{ borderRadius: '10px', fontSize: 12, border: '1px solid #EAE0CC' }} formatter={(v) => [`${v}%`, '']} />
+              <YAxis type="category" dataKey="channel" tick={{ fontSize: 11, fill: '#7A8B95' }} axisLine={false} tickLine={false} width={55} />
+              <Tooltip contentStyle={{ borderRadius: '10px', fontSize: 12, border: '1px solid #D9E2EC' }} formatter={(v) => [`${v}%`, '']} />
               <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                 {[
-                  { channel: 'Direct', value: 58, color: '#0F2040' },
-                  { channel: 'Airbnb', value: 22, color: '#3D8B7A' },
+                  { channel: 'Direct', value: 58, color: '#0F4C81' },
+                  { channel: 'Airbnb', value: 22, color: '#2E8B57' },
                   { channel: 'Booking', value: 12, color: '#C9A84C' },
-                  { channel: 'Expedia', value: 5, color: '#C4664A' },
-                  { channel: 'Other', value: 3, color: '#BAA882' },
+                  { channel: 'Expedia', value: 5, color: '#B85234' },
+                  { channel: 'Other', value: 3, color: '#A0B5C4' },
                 ].map((entry, i) => (
                   <Cell key={i} fill={entry.color} />
                 ))}

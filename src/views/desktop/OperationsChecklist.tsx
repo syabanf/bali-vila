@@ -93,8 +93,8 @@ const OperationsChecklist: FC = () => {
               {/* Ring */}
               <div className="relative w-14 h-14">
                 <svg className="w-14 h-14 -rotate-90" viewBox="0 0 56 56">
-                  <circle cx="28" cy="28" r="24" fill="none" stroke="#EAE0CC" strokeWidth="4" />
-                  <circle cx="28" cy="28" r="24" fill="none" stroke={completionPct === 100 ? '#3D8B7A' : '#C9A84C'} strokeWidth="4"
+                  <circle cx="28" cy="28" r="24" fill="none" stroke="#D9E2EC" strokeWidth="4" />
+                  <circle cx="28" cy="28" r="24" fill="none" stroke={completionPct === 100 ? '#2E8B57' : '#C9A84C'} strokeWidth="4"
                     strokeDasharray={`${2 * Math.PI * 24}`} strokeDashoffset={`${2 * Math.PI * 24 * (1 - completionPct / 100)}`}
                     strokeLinecap="round" className="transition-all duration-500" />
                 </svg>

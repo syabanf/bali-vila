@@ -39,11 +39,11 @@ const statusConfig = {
 }
 
 const varianceData = [
-  { villa: 'V.Seminyak 07', variance: -25, color: '#C4664A' },
-  { villa: 'V.Sawah 03', variance: -14, color: '#C4664A' },
+  { villa: 'V.Seminyak 07', variance: -25, color: '#B85234' },
+  { villa: 'V.Sawah 03', variance: -14, color: '#B85234' },
   { villa: 'V.Tirta 05', variance: -8, color: '#C9A84C' },
   { villa: 'V.Bukit 11', variance: -5, color: '#C9A84C' },
-  { villa: 'V.Tebing 01', variance: -3, color: '#D4C4A0' },
+  { villa: 'V.Tebing 01', variance: -3, color: '#C0CFDB' },
 ]
 
 const VILLA_OPTIONS = [
@@ -355,8 +355,8 @@ const InventoryManagement: FC = () => {
             <p className="text-xs text-cocoa-400 mb-3">Top 5 villas with issues</p>
             <ResponsiveContainer width="100%" height={160}>
               <BarChart data={varianceData} layout="vertical" margin={{ left: 0, right: 20, top: 0, bottom: 0 }}>
-                <XAxis type="number" tick={{ fontSize: 10, fill: '#9A8868' }} axisLine={false} tickLine={false} />
-                <YAxis type="category" dataKey="villa" tick={{ fontSize: 10, fill: '#6A4030' }} axisLine={false} tickLine={false} width={80} />
+                <XAxis type="number" tick={{ fontSize: 10, fill: '#7A8B95' }} axisLine={false} tickLine={false} />
+                <YAxis type="category" dataKey="villa" tick={{ fontSize: 10, fill: '#52616B' }} axisLine={false} tickLine={false} width={80} />
                 <Tooltip contentStyle={{ borderRadius: '10px', fontSize: 12 }} formatter={(v) => [`${v} units`, 'Variance']} />
                 <Bar dataKey="variance" radius={[0, 4, 4, 0]}>
                   {varianceData.map((e, i) => <Cell key={i} fill={e.color} />)}
